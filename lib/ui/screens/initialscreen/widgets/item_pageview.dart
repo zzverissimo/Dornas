@@ -1,5 +1,5 @@
 import 'package:dornas_app/ui/widgets/custom_clipimage.dart';
-import 'package:dornas_app/ui/widgets/style_text.dart';
+import 'package:dornas_app/ui/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 
 class ItemPageView extends StatelessWidget {
@@ -59,7 +59,7 @@ class ItemPageView extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-            child: StyleText(
+            child: CustomText(
               fontFamily: text1FontFamily, 
               color: text1Color, 
               fontsize: text1FontSize, 
@@ -70,7 +70,7 @@ class ItemPageView extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsetsDirectional.fromSTEB(12, 4, 12, 0),
-            child: StyleText(
+            child: CustomText(
               fontFamily: text2FontFamily,
               color: text2Color,
               fontsize: text2FontSize,

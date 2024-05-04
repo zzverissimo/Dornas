@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class StyleText extends StatelessWidget {
-  const StyleText({
+class CustomText extends StatelessWidget {
+  const CustomText({
     required this.fontFamily,
     required this.color, 
     required this.fontsize,

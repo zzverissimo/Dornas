@@ -1,97 +1,74 @@
-import 'package:dornas_app/ui/screens/register/constants.dart';
-import 'package:flutter/material.dart';
+// import 'package:dornas_app/ui/screens/register/constants.dart';
+// import 'package:dornas_app/ui/widgets/custom_text.dart';
+// import 'package:flutter/material.dart';
 
-/// A gradient text.
-class GradientText extends StatelessWidget {
-  /// Colors used to show the gradient.
-  final List<Color> colors;
+// class GradientText extends StatelessWidget {
 
-  /// Direction in which the gradient will be displayed.
-  final GradientDirection? gradientDirection;
+//   final List<Color> colors;
+//   final GradientDirection? gradientDirection;
+//   final GradientType gradientType;
+//   final TextOverflow? overflow;
+//   final double radius;
+//   final TextStyle? style;
+//   final String text;
+//   final TextAlign? textAlign;
+//   final String fontFamily = 'Rubik';
+//   final double fontsize = 20.0;
+//   final double letterSpacing = 1.0;
 
-  /// The type of gradient to apply.
-  final GradientType gradientType;
+//   const GradientText(
+//     this.text, {
+//     super.key,
+//     required this.colors,
+//     this.gradientDirection = GradientDirection.ltr,
+//     this.gradientType = GradientType.linear,
+//     this.overflow,
+//     this.radius = 1.0,
+//     this.style,
+//     this.textAlign,
+//   });
 
-  /// How visual overflow should be handled.
-  final TextOverflow? overflow;
-
-  /// The radius of the gradient, as a fraction of the shortest side
-  /// of the paint box.
-  final double radius;
-
-  /// If non-null, the style to use for this text.
-  final TextStyle? style;
-
-  /// The text to display.
-  final String text;
-
-  /// How the text should be aligned horizontally.
-  final TextAlign? textAlign;
-
-  const GradientText(
-    this.text, {
-    required this.colors,
-    this.gradientDirection = GradientDirection.ltr,
-    this.gradientType = GradientType.linear,
-    Key? key,
-    this.overflow,
-    this.radius = 1.0,
-    this.style,
-    this.textAlign,
-  })  : assert(
-          colors.length >= 2,
-          'Colors list must have at least two colors',
-        ),
-        super(key: key);
-
-  @override
-  Widget build(final BuildContext context) {
-    return ShaderMask(
-      shaderCallback: (final Rect bounds) {
-        switch (gradientType) {
-          case GradientType.linear:
-            final Map<String, Alignment> map = {};
-            switch (gradientDirection) {
-              case GradientDirection.rtl:
-                map['begin'] = Alignment.centerRight;
-                map['end'] = Alignment.centerLeft;
-                break;
-              case GradientDirection.ttb:
-                map['begin'] = Alignment.topCenter;
-                map['end'] = Alignment.bottomCenter;
-                break;
-              case GradientDirection.btt:
-                map['begin'] = Alignment.bottomCenter;
-                map['end'] = Alignment.topCenter;
-                break;
-              default:
-                map['begin'] = Alignment.centerLeft;
-                map['end'] = Alignment.centerRight;
-                break;
-            }
-            return LinearGradient(
-              begin: map['begin']!,
-              colors: colors,
-              end: map['end']!,
-            ).createShader(bounds);
-          case GradientType.radial:
-            return RadialGradient(
-              colors: colors,
-              radius: radius,
-            ).createShader(bounds);
-        }
-      },
-      child: Text(
-        text,
-        overflow: overflow,
-        style: style != null
-            ? style?.copyWith(color: Colors.white)
-            : const TextStyle(color: Colors.white),
-        textAlign: textAlign,
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(final BuildContext context) {
+//     return ShaderMask(
+//       shaderCallback: (final Rect bounds) {
+//         switch (gradientType) {
+//           case GradientType.linear:
+//             final Map<String, Alignment> map = {};
+//             switch (gradientDirection) {
+//               case GradientDirection.rtl:
+//                 map['begin'] = Alignment.centerRight;
+//                 map['end'] = Alignment.centerLeft;
+//                 break;
+//               case GradientDirection.ttb:
+//                 map['begin'] = Alignment.topCenter;
+//                 map['end'] = Alignment.bottomCenter;
+//                 break;
+//               case GradientDirection.btt:
+//                 map['begin'] = Alignment.bottomCenter;
+//                 map['end'] = Alignment.topCenter;
+//                 break;
+//               default:
+//                 map['begin'] = Alignment.centerLeft;
+//                 map['end'] = Alignment.centerRight;
+//                 break;
+//             }
+//             return LinearGradient(
+//               begin: map['begin']!,
+//               colors: colors,
+//               end: map['end']!,
+//             ).createShader(bounds);
+//           case GradientType.radial:
+//             return RadialGradient(
+//               colors: colors,
+//               radius: radius,
+//             ).createShader(bounds);
+//         }
+//       },
+//       child: StyleText(fontFamily: fontFamily, fontsize: fontsize, letterSpacing: letterSpacing, text: text)
+//     );
+//   }
+// }
 
 
 
