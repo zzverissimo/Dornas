@@ -9,9 +9,11 @@ class LoginForm extends StatelessWidget {
     required this.validator,
     required this.obscureText,
     required this.autofillHints,
+    this.controller,
     super.key});
 
   final TextInputType textinput;
+  final TextEditingController? controller;
   final String text;
   final String? Function(String?) validator;
   final bool obscureText;
@@ -30,6 +32,7 @@ class LoginForm extends StatelessWidget {
           keyboardType: textinput,
           autofillHints: autofillHints,
           validator: validator,
+          controller: controller,
         ),
       ),
     );

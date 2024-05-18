@@ -1,35 +1,29 @@
 class AppUser {
   final String id;
   final String email;
-  final String password;
   final String? displayName;
   final String? photoUrl;
 
   AppUser({
     required this.id,
     required this.email,
-    required this.password,
     this.displayName,
     this.photoUrl,
   });
 
-  // Constructor que permite crear un objeto User desde un documento de Firestore
-  factory AppUser.fromFirestore(Map<String, dynamic> firestore) {
-      return AppUser(
-        id: firestore['id'] as String,
-        email: firestore['email'] as String,
-        password: firestore['password'] as String,
-        displayName: firestore['displayName'] as String?,
-        photoUrl: firestore['photoUrl'] as String?,
-      );
+  factory AppUser.fromFirestore(Map<String, dynamic> data) {
+    return AppUser(
+      id: data['id'] as String,
+      email: data['email'] as String,
+      displayName: data['displayName'] as String?,
+      photoUrl: data['photoUrl'] as String?,
+    );
   }
 
-  // Método para convertir un objeto User a un Map, útil para enviar datos a Firestore
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'email': email,
-      'password': password,
       'displayName': displayName,
       'photoUrl': photoUrl,
     };

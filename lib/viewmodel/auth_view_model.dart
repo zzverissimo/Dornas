@@ -17,10 +17,6 @@ class AuthViewModel extends ChangeNotifier {
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
-  AuthViewModel() {
-    _currentUser = _authService.currentUser;
-  }
-
   void setLoading(bool loading) {
     _isLoading = loading;
     notifyListeners();
@@ -31,13 +27,16 @@ class AuthViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> signIn(String email, String password) async {
+  Future<void> signUp(String email, String password, String displayName) async {
     setLoading(true);
     setMessage(null);
     try {
-      User? user = await _authService.signIn(email, password);
+      User? user = await _authService.signUp(email, password);
       if (user != null) {
-        _currentUser = await _userService.fetchOrCreateUser(user);
+        AppUser newUser =
+            AppUser(id: user.uid, email: user.email!, displayName: displayName);
+        await _userService.updateUser(newUser);
+        _currentUser = newUser;
         notifyListeners();
       }
     } catch (e) {
@@ -47,20 +46,17 @@ class AuthViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> signUp(String email, String password, String displayName) async {
+  Future<void> signIn(String email, String password) async {
     setLoading(true);
     setMessage(null);
     try {
-      User? user = await _authService.signUp(email, password);
+      User? user = await _authService.signIn(email, password);
       if (user != null) {
-        // Create a new user entry in Firestore with additional details like displayName
-        await _userService.updateUser(User(
-          id: user.uid,
-          email: user.email!,
-          displayName: displayName,
-        ));
-        _currentUser = User(id: user.uid, email: user.email!, displayName: displayName);
-        notifyListeners();
+        AppUser? appUser = await _userService.getUser(user.uid);
+        if (appUser != null) {
+          _currentUser = appUser;
+          notifyListeners();
+        }
       }
     } catch (e) {
       setMessage(e.toString());
@@ -71,7 +67,6 @@ class AuthViewModel extends ChangeNotifier {
 
   Future<void> signOut() async {
     setLoading(true);
-    setMessage(null);
     try {
       await _authService.signOut();
       _currentUser = null;
@@ -88,7 +83,7 @@ class AuthViewModel extends ChangeNotifier {
     setMessage(null);
     try {
       await _authService.sendPasswordResetEmail(email);
-      setMessage('Reset link sent to your email');
+      setMessage('Password reset link sent to your email.');
     } catch (e) {
       setMessage(e.toString());
     } finally {

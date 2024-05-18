@@ -1,10 +1,12 @@
-import 'package:dornas_app/ui/widgets/clip_container.dart';
-import 'package:dornas_app/ui/widgets/color_container.dart';
 import 'package:dornas_app/ui/screens/login/widgets/login_buttons.dart';
 import 'package:dornas_app/ui/screens/login/widgets/login_form.dart';
+import 'package:dornas_app/ui/widgets/clip_container.dart';
+import 'package:dornas_app/ui/widgets/color_container.dart';
 import 'package:dornas_app/ui/widgets/custom_clipimage.dart';
 import 'package:dornas_app/ui/widgets/custom_validators.dart';
+import 'package:dornas_app/viewmodel/auth_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 //import 'package:google_fonts/google_fonts.dart';
 // import 'package:provider/provider.dart';
@@ -90,9 +92,12 @@ class _LoginScreenState extends State<LoginScreen>
   //  }
 
   // }
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final authViewModel = Provider.of<AuthViewModel>(context);
     return MaterialApp(
       /*onTap: () => _model.unfocusNode.canRequestFocus
           ? FocusScope.of(context).requestFocus(_model.unfocusNode)
@@ -107,7 +112,11 @@ class _LoginScreenState extends State<LoginScreen>
             ColorContainer(
               width: double.infinity,
               height: 300,
-              colors: const [Color(0xFF67A5E6), Color(0xFFBDCBE2), Color(0xFFB6D0E2)],
+              colors: const [
+                Color(0xFF67A5E6),
+                Color(0xFFBDCBE2),
+                Color(0xFFB6D0E2)
+              ],
               begin: const AlignmentDirectional(0.1, -1),
               end: const AlignmentDirectional(-0.1, 1),
               stops: const [0, 0.5, 1],
@@ -144,37 +153,37 @@ class _LoginScreenState extends State<LoginScreen>
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      LoginForm(
+                          controller: emailController,
+                          textinput: TextInputType.emailAddress,
+                          text: "Email",
+                          validator: emailValidator,
+                          obscureText: false,
+                          autofillHints: const [AutofillHints.email]),
                       const LoginForm(
-                       textinput: TextInputType.emailAddress,
-                       text: "Email", 
-                       validator: emailValidator ,
-                       obscureText: false,
-                       autofillHints: [AutofillHints.email]  
-                      ),
-                      const LoginForm(
-                        textinput: TextInputType.visiblePassword,
-                        text: "Contraseña",
-                        validator: passwordValidator, 
-                        obscureText: true,
-                        autofillHints: [AutofillHints.password]
-                      ),
+                          textinput: TextInputType.visiblePassword,
+                          text: "Contraseña",
+                          validator: passwordValidator,
+                          obscureText: true,
+                          autofillHints: [AutofillHints.password]),
                       LoginButtons(
-                      onPressed: (){}, 
-                      text: "Iniciar Sesión", 
-                      backgroundColor: Colors.black, 
-                      foregroundColor: Colors.white
-                      ),
+                          onPressed: () {
+                            authViewModel.signIn(
+                                emailController.text, passwordController.text);
+                          },
+                          text: "Iniciar Sesión",
+                          backgroundColor: Colors.black,
+                          foregroundColor: Colors.white),
                       LoginButtons(
-                      onPressed: (){}, 
-                      text: "Registrarse", 
-                      backgroundColor: Colors.white, 
-                      foregroundColor: Colors.black
-                      ),
+                          onPressed: () {/*navegar a registro*/},
+                          text: "Registrarse",
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.black),
                       LoginButtons(
-                      onPressed: (){}, 
-                      text: "Olivdé mi contraseña", 
-                      backgroundColor: Colors.black, 
-                      foregroundColor: Colors.white,
+                        onPressed: () {},
+                        text: "Olivdé mi contraseña",
+                        backgroundColor: Colors.black,
+                        foregroundColor: Colors.white,
                       ),
                       // Column(
 
