@@ -5,8 +5,7 @@ class AuthenticationService {
 
   Future<User?> signUp(String email, String password) async {
     try {
-      UserCredential result = await _firebaseAuth
-          .createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential result = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
       return result.user;
     } catch (e) {
       throw Exception('Error registering user: $e');
@@ -15,8 +14,7 @@ class AuthenticationService {
 
   Future<User?> signIn(String email, String password) async {
     try {
-      UserCredential result = await _firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: password);
+      UserCredential result = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
       return result.user;
     } catch (e) {
       throw Exception('Error signing in: $e');

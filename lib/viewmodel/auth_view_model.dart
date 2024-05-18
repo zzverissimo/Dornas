@@ -33,8 +33,7 @@ class AuthViewModel extends ChangeNotifier {
     try {
       User? user = await _authService.signUp(email, password);
       if (user != null) {
-        AppUser newUser =
-            AppUser(id: user.uid, email: user.email!, displayName: displayName);
+        AppUser newUser = AppUser(id: user.uid, email: user.email!, displayName: displayName);
         await _userService.updateUser(newUser);
         _currentUser = newUser;
         notifyListeners();

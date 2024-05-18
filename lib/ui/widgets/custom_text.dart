@@ -7,7 +7,7 @@ class CustomText extends StatelessWidget {
     required this.color, 
     required this.fontsize,
     required this.letterSpacing,
-    required this.fontWeight,
+    this.fontWeight,
     required this.text,
     super.key,
   });
@@ -17,7 +17,7 @@ class CustomText extends StatelessWidget {
   final Color color;
   final double fontsize;
   final double letterSpacing;
-  final FontWeight fontWeight;
+  final FontWeight? fontWeight;
 
   @override
   Widget build(context) {
@@ -26,11 +26,11 @@ class CustomText extends StatelessWidget {
       style: GoogleFonts.getFont(
         fontFamily,
         textStyle: TextStyle(
-        color: color,
-        fontSize: fontsize,
-        letterSpacing: letterSpacing,
-        fontWeight: fontWeight,
-        )
+          color: color,
+          fontSize: fontsize,
+          letterSpacing: letterSpacing,
+          fontWeight: fontWeight,
+        ),
       ),
     );
   }

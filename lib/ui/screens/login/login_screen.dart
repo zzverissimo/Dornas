@@ -160,12 +160,13 @@ class _LoginScreenState extends State<LoginScreen>
                           validator: emailValidator,
                           obscureText: false,
                           autofillHints: const [AutofillHints.email]),
-                      const LoginForm(
+                      LoginForm(
+                          controller: passwordController,
                           textinput: TextInputType.visiblePassword,
                           text: "Contraseña",
                           validator: passwordValidator,
                           obscureText: true,
-                          autofillHints: [AutofillHints.password]),
+                          autofillHints: const [AutofillHints.password]),
                       LoginButtons(
                           onPressed: () {
                             authViewModel.signIn(
@@ -175,7 +176,13 @@ class _LoginScreenState extends State<LoginScreen>
                           backgroundColor: Colors.black,
                           foregroundColor: Colors.white),
                       LoginButtons(
-                          onPressed: () {/*navegar a registro*/},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const RegisterScreen()),
+                            );
+                          },
                           text: "Registrarse",
                           backgroundColor: Colors.white,
                           foregroundColor: Colors.black),
