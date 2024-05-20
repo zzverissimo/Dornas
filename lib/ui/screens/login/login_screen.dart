@@ -1,5 +1,6 @@
 import 'package:dornas_app/ui/screens/login/widgets/login_buttons.dart';
 import 'package:dornas_app/ui/screens/login/widgets/login_form.dart';
+import 'package:dornas_app/ui/screens/register/register_screen.dart';
 import 'package:dornas_app/ui/widgets/clip_container.dart';
 import 'package:dornas_app/ui/widgets/color_container.dart';
 import 'package:dornas_app/ui/widgets/custom_clipimage.dart';
@@ -178,10 +179,9 @@ class _LoginScreenState extends State<LoginScreen>
                       LoginButtons(
                           onPressed: () {
                             Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const RegisterScreen()),
-                            );
+                            context,
+                            MaterialPageRoute(builder: (context) => const RegisterScreen()),
+                          );
                           },
                           text: "Registrarse",
                           backgroundColor: Colors.white,

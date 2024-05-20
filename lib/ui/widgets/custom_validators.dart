@@ -27,3 +27,16 @@ String? passwordValidator(String? value) {
   }
   return null;
 }
+
+String? nameValidator(String? value) {
+  if (value == null || value.trim().isEmpty) {
+    return 'Introduce tu nombre';
+  }
+  if (value.trim().length < 3) {
+    return 'El nombre debe tener al menos 3 caracteres';
+  }
+  if (RegExp(r'\d').hasMatch(value)) {
+    return 'El nombre no puede contener números';
+  }
+  return null;
+}

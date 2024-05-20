@@ -1,8 +1,11 @@
 import 'package:dornas_app/ui/screens/register/constants.dart';
 import 'package:dornas_app/ui/screens/register/gradient_text.dart';
+import 'package:dornas_app/ui/screens/register/register_form.dart';
 import 'package:dornas_app/ui/widgets/clip_container.dart';
 import 'package:dornas_app/ui/widgets/color_container.dart';
+import 'package:dornas_app/ui/widgets/custom_button.dart';
 import 'package:dornas_app/ui/widgets/custom_clipimage.dart';
+import 'package:dornas_app/ui/widgets/custom_validators.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -87,289 +90,74 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         letterSpacing: 0,
                       ),
                     ),
-                    Padding(
+                    const Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
-                      child: Container(
+                      child: RegisterForm(
                         width: double.infinity,
-                        child: TextFormField(
-                          controller: _model.emailAddressTextController1,
-                          focusNode: _model.emailAddressFocusNode1,
-                          autofocus: true,
-                          autofillHints: [AutofillHints.email],
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            labelText: 'Nombre',
-                            labelStyle: FlutterFlowTheme.of(context)
-                                .labelMedium
-                                .override(
-                                  fontFamily: 'Rubik',
-                                  letterSpacing: 0,
-                                ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).alternate,
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).primary,
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).error,
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).error,
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            filled: true,
-                            fillColor: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                            contentPadding: EdgeInsets.all(24),
-                          ),
-                          style:
-                              FlutterFlowTheme.of(context).bodyMedium.override(
-                                    fontFamily: 'Rubik',
-                                    letterSpacing: 0,
-                                  ),
-                          keyboardType: TextInputType.emailAddress,
-                          validator: _model.emailAddressTextController1Validator
-                              .asValidator(context),
-                        ),
+                        labelText: 'Nombre',
+                        keyboardType: TextInputType.name,
+                        autofocus: true,
+                        autofillHints: [AutofillHints.name],
+                        obscureText: false,
+                        fontFamily: 'Rubik',
+                        validator: nameValidator,
                       ),
                     ),
-                    Padding(
+                    const Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
-                      child: Container(
-                        width: double.infinity,
-                        child: TextFormField(
-                          // controller: _model.emailAddressTextController2,
-                          // focusNode: _model.emailAddressFocusNode2,
-                          autofocus: true,
-                          autofillHints: [AutofillHints.email],
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            labelText: 'Email',
-                            labelStyle: FlutterFlowTheme.of(context)
-                                .labelMedium
-                                .override(
-                                  fontFamily: 'Rubik',
-                                  letterSpacing: 0,
-                                ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).alternate,
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).primary,
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).error,
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).error,
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            filled: true,
-                            fillColor: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                            contentPadding: EdgeInsets.all(24),
-                          ),
-                          style:
-                              FlutterFlowTheme.of(context).bodyMedium.override(
-                                    fontFamily: 'Rubik',
-                                    letterSpacing: 0,
-                                  ),
-                          keyboardType: TextInputType.emailAddress,
-                          validator: _model.emailAddressTextController2Validator
-                              .asValidator(context),
-                        ),
+                      child: RegisterForm(
+                        width:double.infinity,
+                        labelText: 'Email',
+                        keyboardType: TextInputType.emailAddress,
+                        autofocus: true,
+                        autofillHints: [AutofillHints.email],
+                        obscureText: false,
+                        fontFamily: 'Rubik',
+                        validator: emailValidator
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
-                      child: Container(
-                        width: double.infinity,
-                        child: TextFormField(
-                          controller: _model.emailAddressTextController3,
-                          focusNode: _model.emailAddressFocusNode3,
-                          autofocus: true,
-                          autofillHints: [AutofillHints.email],
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            labelText: 'Contraseña',
-                            labelStyle: FlutterFlowTheme.of(context)
-                                .labelMedium
-                                .override(
-                                  fontFamily: 'Rubik',
-                                  letterSpacing: 0,
-                                ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).alternate,
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).primary,
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).error,
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).error,
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            filled: true,
-                            fillColor: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                            contentPadding: EdgeInsets.all(24),
-                          ),
-                          style:
-                              FlutterFlowTheme.of(context).bodyMedium.override(
-                                    fontFamily: 'Rubik',
-                                    letterSpacing: 0,
-                                  ),
-                          keyboardType: TextInputType.emailAddress,
-                          validator: _model.emailAddressTextController3Validator
-                              .asValidator(context),
-                        ),
-                      ),
-                    ),
-                    Padding(
+                    const Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
-                      child: Container(
+                      child: RegisterForm(
                         width: double.infinity,
-                        child: TextFormField(
-                          controller: _model.emailAddressTextController4,
-                          focusNode: _model.emailAddressFocusNode4,
-                          autofocus: true,
-                          autofillHints: [AutofillHints.email],
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            labelText: 'Repite contraseña',
-                            labelStyle: FlutterFlowTheme.of(context)
-                                .labelMedium
-                                .override(
-                                  fontFamily: 'Rubik',
-                                  letterSpacing: 0,
-                                ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).alternate,
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).primary,
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).error,
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).error,
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            filled: true,
-                            fillColor: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                            contentPadding: EdgeInsets.all(24),
-                          ),
-                          style:
-                              FlutterFlowTheme.of(context).bodyMedium.override(
-                                    fontFamily: 'Rubik',
-                                    letterSpacing: 0,
-                                  ),
-                          keyboardType: TextInputType.emailAddress,
-                          validator: _model.emailAddressTextController4Validator
-                              .asValidator(context),
+                        labelText: 'Contraseña',
+                        keyboardType: TextInputType.visiblePassword,
+                        autofocus: false, 
+                        autofillHints: [AutofillHints.password],
+                        obscureText: true, 
+                        fontFamily: 'Rubik',
+                        validator: passwordValidator 
+                        )
+                    ),
+                    const Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
+                      child: RegisterForm(
+                        width: double.infinity,
+                        labelText: 'Repite contraseña',
+                        keyboardType: TextInputType.visiblePassword,
+                        autofocus: false, 
+                        autofillHints: [AutofillHints.password],
+                        obscureText: true, 
+                        fontFamily: 'Rubik',
+                        validator: passwordValidator 
                         ),
-                      ),
                     ),
                   ],
                 ),
               ),
             ),
             Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+              padding: const EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  FFButtonWidget(
-                    onPressed: () {
-                      print('Button pressed ...');
-                    },
+                  CustomButton(
+                    onPressed: () {/*REGISTRARLO*/},
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
                     text: 'Registrarse',
-                    options: FFButtonOptions(
-                      height: 40,
-                      padding: EdgeInsetsDirectional.fromSTEB(24, 0, 24, 0),
-                      iconPadding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
-                      color: FlutterFlowTheme.of(context).secondaryBackground,
-                      textStyle:
-                          FlutterFlowTheme.of(context).titleSmall.override(
-                                fontFamily: 'Rubik',
-                                color: Colors.black,
-                                fontSize: 14,
-                                letterSpacing: 0,
-                              ),
-                      elevation: 3,
-                      borderSide: BorderSide(
-                        color: Colors.black,
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(24),
                     ),
-                  ),
                 ],
               ),
             ),
