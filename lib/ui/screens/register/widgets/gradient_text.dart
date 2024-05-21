@@ -1,4 +1,4 @@
-import 'package:dornas_app/ui/screens/register/constants.dart';
+import 'package:dornas_app/ui/screens/register/widgets/constants.dart';
 import 'package:dornas_app/ui/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 

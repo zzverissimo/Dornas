@@ -106,8 +106,12 @@ class _LoginScreenState extends State<LoginScreen>
       home: Scaffold(
         // key: scaffoldKey,
         backgroundColor: Colors.white,
+        resizeToAvoidBottomInset: true,
         //SOLUCIONAR LO DEL COLOR y AÑADIRLE LA ANIMACIÓN
-        body: Column(
+        body:
+        SafeArea(
+        child: SingleChildScrollView(
+         child: Column( 
           mainAxisSize: MainAxisSize.max,
           children: [
             ColorContainer(
@@ -202,6 +206,8 @@ class _LoginScreenState extends State<LoginScreen>
                   ),
             ),
           ],
+        ),
+        ),
         ),
       ),
     );

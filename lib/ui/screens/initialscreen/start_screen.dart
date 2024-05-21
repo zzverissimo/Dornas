@@ -1,6 +1,7 @@
 import 'package:dornas_app/ui/screens/initialscreen/widgets/start_buttons.dart';
 import 'package:dornas_app/ui/screens/initialscreen/widgets/widget_pageview.dart';
 import 'package:dornas_app/ui/screens/login/login_screen.dart';
+import 'package:dornas_app/ui/screens/register/register_screen.dart';
 import 'package:flutter/material.dart';
 
 class StartScreen extends StatefulWidget {
@@ -49,7 +50,7 @@ class _StartScreenState extends State<StartScreen> {
                 onRegisterPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const LoginScreen()),
+                    MaterialPageRoute(builder: (context) => const RegisterScreen()),
                   );
                 },
               ),
