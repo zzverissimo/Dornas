@@ -9,7 +9,8 @@ class ColorContainer extends StatelessWidget {
     required this.end,
     required this.stops,
     required this.child,
-    super.key}) ;
+    super.key,
+  });
 
   final double width;
   final double height;
@@ -30,10 +31,9 @@ class ColorContainer extends StatelessWidget {
           stops: stops,
           begin: begin,
           end: end,
-        )
+        ),
       ),
-      child: child
+      child: child,
     );
   }
 }
-

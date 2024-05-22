@@ -1,14 +1,17 @@
 
 String? emailValidator(String? value) {
-  if (value == null || value.trim().isEmpty || !value.contains('@')) {
-    return 'Por favor, introduce un email válido';
+  if (value == null || value.trim().isEmpty) {
+    return 'Introduce tu email, el campo está vacío';
+  }
+  if (value.trim().isEmpty || !value.contains('@gmail.com') || !value.contains('@hotmail.com') || !value.contains('@outlook.com')){
+    return 'Por favor, introduce un email válido, verifica que contenga @gmail.com, @hotmail.com o @outlook.com';
   }
   return null;
 }
 
 String? passwordValidator(String? value) {
   if (value == null || value.trim().isEmpty) {
-    return 'Introduce tu contraseña';
+    return 'Introduce tu contraseña, el campo está vacío';
   }
   if (value.trim().length < 6) {
     return 'La contraseña debe tener al menos 6 caracteres';
@@ -16,14 +19,8 @@ String? passwordValidator(String? value) {
   bool hasNumber = value.contains(RegExp(r'\d'));
   bool hasUpperCase = value.contains(RegExp(r'[A-Z]'));
   bool hasSymbol = value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
-  if (!hasUpperCase) {
-    return 'La contraseña debe contener al menos una letra mayúscula';
-  }
-  if (!hasNumber) {
-    return 'La contraseña debe contener al menos un número';
-  }
-  if (!hasSymbol) {
-    return 'La contraseña debe contener al menos un símbolo';
+  if (!hasUpperCase || !hasNumber || !hasSymbol) {
+    return 'La contraseña debe contener al menos una letra mayúscula, un número y un símbolo';
   }
   return null;
 }
