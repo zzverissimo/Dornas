@@ -3,6 +3,7 @@ import 'package:dornas_app/services/auth_service.dart';
 import 'package:dornas_app/services/user_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterViewModel extends ChangeNotifier {
   final AuthenticationService _authService = AuthenticationService();
@@ -32,6 +33,11 @@ class RegisterViewModel extends ChangeNotifier {
       if (user != null) {
         AppUser newUser = AppUser(id: user.uid, email: user.email!, displayName: displayName);
         await _userService.updateUser(newUser);
+
+        // Guardar estado de inicio de sesión
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('isLoggedIn', true);
+
         notifyListeners();
       }
     } catch (e) {

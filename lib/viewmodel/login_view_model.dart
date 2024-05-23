@@ -1,10 +1,11 @@
 import 'package:dornas_app/model/user_model.dart';
 import 'package:dornas_app/services/auth_service.dart';
 import 'package:dornas_app/services/user_service.dart';
+import 'package:dornas_app/viewmodel/lifecycle_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthViewModel extends ChangeNotifier {
+class AuthViewModel extends BaseViewModel {
   final AuthenticationService _authService = AuthenticationService();
   final UserService _userService = UserService();
 
@@ -36,6 +37,7 @@ class AuthViewModel extends ChangeNotifier {
         AppUser newUser = AppUser(id: user.uid, email: user.email!, displayName: displayName);
         await _userService.updateUser(newUser);
         _currentUser = newUser;
+        await _saveUserSession(newUser);
         notifyListeners();
       }
     } catch (e) {
@@ -54,6 +56,7 @@ class AuthViewModel extends ChangeNotifier {
         AppUser? appUser = await _userService.getUser(user.uid);
         if (appUser != null) {
           _currentUser = appUser;
+          await _saveUserSession(appUser);
           notifyListeners();
         }
       }
@@ -69,6 +72,7 @@ class AuthViewModel extends ChangeNotifier {
     try {
       await _authService.signOut();
       _currentUser = null;
+      await _clearUserSession();
       notifyListeners();
     } catch (e) {
       setMessage(e.toString());
@@ -87,6 +91,37 @@ class AuthViewModel extends ChangeNotifier {
       setMessage(e.toString());
     } finally {
       setLoading(false);
+    }
+  }
+
+  @override
+  void onResume() {
+    super.onResume();
+    _loadUserSession();
+  }
+
+  Future<void> _saveUserSession(AppUser user) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('userId', user.id);
+    await prefs.setString('userEmail', user.email);
+    await prefs.setString('userDisplayName', user.displayName ?? '');
+  }
+
+  Future<void> _clearUserSession() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('userId');
+    await prefs.remove('userEmail');
+    await prefs.remove('userDisplayName');
+  }
+
+  Future<void> _loadUserSession() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userId = prefs.getString('userId');
+    String? userEmail = prefs.getString('userEmail');
+    String? userDisplayName = prefs.getString('userDisplayName');
+    if (userId != null && userEmail != null) {
+      _currentUser = AppUser(id: userId, email: userEmail, displayName: userDisplayName);
+      notifyListeners();
     }
   }
 }
