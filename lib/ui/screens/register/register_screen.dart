@@ -24,6 +24,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +36,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         resizeToAvoidBottomInset: true,
         body: SafeArea(
           child: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
             child: Column(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -162,6 +165,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     children: [
                       CustomButton(
                         onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
                           if (passwordController.text == confirmPasswordController.text) {
                             await authViewModel.signUp(
                               emailController.text,
@@ -176,7 +180,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      title: const Text('Error'),
+                                      title: const Text('Verificar email'),
                                       content: Text(authViewModel.errorMessage!),
                                       actions: [
                                         TextButton(
@@ -195,6 +199,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               Navigator.pushReplacementNamed(context, '/home');
                               }
                             }
+                           }
                           } else {
                             authViewModel.setMessage(passwordValidator(passwordController.text));
                             if (context.mounted) {
@@ -202,7 +207,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title: const Text('Error'),
+                                    title: const Text('Verificar contraseña'),
                                     content:  Text(authViewModel.errorMessage!),
                                     actions: [
                                       TextButton(
@@ -229,6 +234,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
           ),
         ),
+      ),
     );
   }
 }
