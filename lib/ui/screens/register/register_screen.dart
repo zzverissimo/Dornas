@@ -30,8 +30,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
 
-    return 
-      Scaffold(
+    return Scaffold(
         backgroundColor: const Color(0xFFBDCBE2),
         resizeToAvoidBottomInset: true,
         body: SafeArea(

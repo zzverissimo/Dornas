@@ -25,8 +25,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         backgroundColor: const Color(0xFFBDCBE2),
         resizeToAvoidBottomInset: true,
         body: SafeArea(
@@ -123,7 +122,6 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             ),
           ),
         ),
-      ),
     );
   }
 }

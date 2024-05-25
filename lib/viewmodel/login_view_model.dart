@@ -1,11 +1,12 @@
 import 'package:dornas_app/model/user_model.dart';
 import 'package:dornas_app/services/auth_service.dart';
 import 'package:dornas_app/services/user_service.dart';
-import 'package:dornas_app/viewmodel/lifecycle_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthViewModel extends BaseViewModel {
+
+class AuthViewModel extends ChangeNotifier {
   final AuthenticationService _authService = AuthenticationService();
   final UserService _userService = UserService();
 
@@ -34,7 +35,12 @@ class AuthViewModel extends BaseViewModel {
     try {
       User? user = await _authService.signUp(email, password);
       if (user != null) {
-        AppUser newUser = AppUser(id: user.uid, email: user.email!, displayName: displayName);
+        AppUser newUser = AppUser(
+          id: user.uid,
+          email: user.email!,
+          displayName: displayName,
+          // canCreateEvents: false, // Por defecto, no puede crear eventos
+        );
         await _userService.updateUser(newUser);
         _currentUser = newUser;
         await _saveUserSession(newUser);
@@ -94,10 +100,11 @@ class AuthViewModel extends BaseViewModel {
     }
   }
 
-  @override
-  void onResume() {
-    super.onResume();
-    _loadUserSession();
+  Future<bool> canUserCreateEvents() async {
+    if (_currentUser != null) {
+      return await _userService.canUserCreateEvents(_currentUser!.id);
+    }
+    return false;
   }
 
   Future<void> _saveUserSession(AppUser user) async {
@@ -105,6 +112,7 @@ class AuthViewModel extends BaseViewModel {
     await prefs.setString('userId', user.id);
     await prefs.setString('userEmail', user.email);
     await prefs.setString('userDisplayName', user.displayName ?? '');
+    // await prefs.setBool('canCreateEvents', user.canCreateEvents);
   }
 
   Future<void> _clearUserSession() async {
@@ -112,6 +120,7 @@ class AuthViewModel extends BaseViewModel {
     await prefs.remove('userId');
     await prefs.remove('userEmail');
     await prefs.remove('userDisplayName');
+    await prefs.remove('canCreateEvents');
   }
 
   Future<void> _loadUserSession() async {
@@ -119,8 +128,14 @@ class AuthViewModel extends BaseViewModel {
     String? userId = prefs.getString('userId');
     String? userEmail = prefs.getString('userEmail');
     String? userDisplayName = prefs.getString('userDisplayName');
+    // bool? canCreateEvents = prefs.getBool('canCreateEvents');
     if (userId != null && userEmail != null) {
-      _currentUser = AppUser(id: userId, email: userEmail, displayName: userDisplayName);
+      _currentUser = AppUser(
+        id: userId,
+        email: userEmail,
+        displayName: userDisplayName,
+        // canCreateEvents: canCreateEvents ?? false,
+      );
       notifyListeners();
     }
   }
