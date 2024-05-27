@@ -195,7 +195,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             }
                             } else if (authViewModel.currentUser != null) {
                               if(context.mounted){
-                              Navigator.pushReplacementNamed(context, '/home');
+                              Navigator.pushReplacementNamed(context, '/main');
                               }
                             }
                            }

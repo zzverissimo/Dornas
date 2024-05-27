@@ -20,26 +20,25 @@ void main() async {
   runApp(
     MultiProvider(
       providers: appProviders,
-      child: DornasApp(isLoggedIn: isLoggedIn)
+      child: DornasApp(isLoggedIn: isLoggedIn),
     ),
   );
 }
 
-  class DornasApp extends StatelessWidget {
-    const DornasApp({super.key, required this.isLoggedIn});
+class DornasApp extends StatelessWidget {
+  const DornasApp({super.key, required this.isLoggedIn});
 
-    final bool isLoggedIn;
+  final bool isLoggedIn;
 
-    @override
-    Widget build(BuildContext context) {
-      return MaterialApp(
-        theme: ThemeData(
-          useMaterial3: true,
-          colorSchemeSeed: Colors.blue,
-        ),
-        initialRoute: isLoggedIn ? '/home' : '/',
-        routes: appRoutes, // Usa las rutas definidas
-      );
-    }
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        useMaterial3: true,
+        colorSchemeSeed: Colors.blue,
+      ),
+      initialRoute: isLoggedIn ? '/main' : '/',
+      routes: appRoutes, // Usa las rutas definidas
+    );
   }
-
+}

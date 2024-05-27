@@ -8,5 +8,5 @@ final List<SingleChildWidget> appProviders = [
   ChangeNotifierProvider(create: (_) => AuthViewModel()),
   ChangeNotifierProvider(create: (_) => RegisterViewModel()),
   ChangeNotifierProvider(create: (_) => NavigationViewModel()),
-  // Agrega otros proveedores aquí si los necesitas
+  // Agrega otros proveedores aquí 
 ];
