@@ -93,15 +93,19 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                           autofillHints: const [AutofillHints.password],
                         ),
                         LoginButtons(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              authViewModel.signIn(emailController.text, passwordController.text);
-                              if (authViewModel.currentUser != null) {
-                                Navigator.pushReplacementNamed(context, '/main');
-                              } else {
-                                // Manejar error
+                          onPressed: () async {
+                           if (_formKey.currentState!.validate()) {
+                              await authViewModel.signIn(emailController.text, passwordController.text);
+                              if (context.mounted) {
+                                if (authViewModel.currentUser != null) {
+                                  Navigator.pushReplacementNamed(context, '/main');
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(authViewModel.errorMessage ?? 'Error al iniciar sesión'))
+                                  );
+                                }
                               }
-                          }
+                            }
                           },
                           text: "Iniciar Sesión",
                           backgroundColor: Colors.black,

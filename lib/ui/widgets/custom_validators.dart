@@ -3,8 +3,13 @@ String? emailValidator(String? value) {
   if (value == null || value.trim().isEmpty) {
     return 'Introduce tu email, el campo está vacío';
   }
-  if (value.trim().isEmpty && !value.contains('@gmail.com') && !value.contains('@hotmail.com') && !value.contains('@outlook.com')){
+  // Verifica que el email tenga el formato correcto
+  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
     return 'Por favor, introduce un email válido';
+  }
+  // Verifica que el email contenga uno de los dominios permitidos
+  if (!value.contains('@gmail.com') && !value.contains('@hotmail.com') && !value.contains('@outlook.com')) {
+    return 'El email debe ser de dominio @gmail.com, @hotmail.com o @outlook.com';
   }
   return null;
 }

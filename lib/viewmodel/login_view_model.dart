@@ -56,25 +56,30 @@ class AuthViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> signIn(String email, String password) async {
-    setLoading(true);
-    setMessage(null);
-    try {
-      User? user = await _authService.signIn(email, password);
-      if (user != null) {
-        AppUser? appUser = await _userService.getUser(user.uid);
-        if (appUser != null) {
-          _currentUser = appUser;
-          await _saveUserSession(appUser);
-          notifyListeners();
-        }
+Future<void> signIn(String email, String password) async {
+  setLoading(true);
+  setMessage(null);
+  try {
+    User? user = await _authService.signIn(email, password);
+    if (user != null) {
+      AppUser? appUser = await _userService.getUser(user.uid);
+      if (appUser != null) {
+        _currentUser = appUser;
+        await _saveUserSession(appUser);
+        notifyListeners();
+      } else {
+        setMessage('Usuario no encontrado en Firestore.');
       }
-    } catch (e) {
-      setMessage(e.toString());
-    } finally {
-      setLoading(false);
+    } else {
+      setMessage('Las credenciales proporcionadas son incorrectas.');
     }
+  } catch (e) {
+    setMessage(e.toString());
+  } finally {
+    setLoading(false);
   }
+}
+
 
   Future<void> signOut() async {
     setLoading(true);
