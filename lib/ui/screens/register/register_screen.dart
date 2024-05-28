@@ -164,63 +164,68 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     children: [
                       CustomButton(
                         onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                          if (passwordController.text == confirmPasswordController.text) {
-                            await authViewModel.signUp(
-                              emailController.text,
-                              passwordController.text,
-                              nameController.text,
-                            );
+                              if (_formKey.currentState!.validate()) {
+                                  await authViewModel.signUp(emailController.text, passwordController.text, nameController.text);
+                                  if(context.mounted){
+                                  if (authViewModel.currentUser != null) {
+                                    Navigator.pushReplacementNamed(context, '/main');
+                                  } }else {
+                                    // Manejar error
+                                  }
+                                } else {
+                                  // Manejar error de contraseña
+                                }
+                          // if (_formKey.currentState!.validate()) {
+                          // if (passwordController.text == confirmPasswordController.text) {
+                          //   authViewModel.signUp(
+                          //     emailController.text,
+                          //     passwordController.text,
+                          //     nameController.text,
+                          //   );
                             
-                            if (authViewModel.errorMessage != null) {
-                              authViewModel.setMessage(emailValidator(emailController.text));
-                              if(context.mounted){
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text('Verificar email'),
-                                      content: Text(authViewModel.errorMessage!),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text('OK'),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                              );
-                            }
-                            } else if (authViewModel.currentUser != null) {
-                              if(context.mounted){
-                              Navigator.pushReplacementNamed(context, '/main');
-                              }
-                            }
-                           }
-                          } else {
-                            authViewModel.setMessage(passwordValidator(passwordController.text));
-                            if (context.mounted) {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: const Text('Verificar contraseña'),
-                                    content:  Text(authViewModel.errorMessage!),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: const Text('OK'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            }
-                          }
+                          //   if (authViewModel.errorMessage != null) {
+                          //     authViewModel.setMessage(emailValidator(emailController.text));
+                          //       showDialog(
+                          //         context: context,
+                          //         builder: (BuildContext context) {
+                          //           return AlertDialog(
+                          //             title: const Text('Verificar email'),
+                          //             content: Text(authViewModel.errorMessage!),
+                          //             actions: [
+                          //               TextButton(
+                          //                 onPressed: () {
+                          //                   Navigator.of(context).pop();
+                          //                 },
+                          //                 child: const Text('OK'),
+                          //               ),
+                          //             ],
+                          //           );
+                          //         },
+                          //     );
+                          //   } else if (authViewModel.currentUser != null) {
+                          //     Navigator.pushReplacementNamed(context, '/main');
+                          //     }
+                          //   }
+                          // } else {
+                          //   authViewModel.setMessage(passwordValidator(passwordController.text));
+                          //     showDialog(
+                          //       context: context,
+                          //       builder: (BuildContext context) {
+                          //         return AlertDialog(
+                          //           title: const Text('Verificar contraseña'),
+                          //           content:  Text(authViewModel.errorMessage!),
+                          //           actions: [
+                          //             TextButton(
+                          //               onPressed: () {
+                          //                 Navigator.of(context).pop();
+                          //               },
+                          //               child: const Text('OK'),
+                          //             ),
+                          //           ],
+                          //         );
+                          //       },
+                          //     );
+                          // }
                         },
                         backgroundColor: Colors.white,
                         foregroundColor: Colors.black,

@@ -7,6 +7,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 class AuthViewModel extends ChangeNotifier {
+  AuthViewModel() {
+    _loadUserSession();
+  }
   final AuthenticationService _authService = AuthenticationService();
   final UserService _userService = UserService();
 

@@ -21,6 +21,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
         resizeToAvoidBottomInset: true,
         body: SafeArea(
           child: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
@@ -90,8 +94,14 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                         ),
                         LoginButtons(
                           onPressed: () {
-                            authViewModel.signIn(
-                                emailController.text, passwordController.text);
+                            if (_formKey.currentState!.validate()) {
+                              authViewModel.signIn(emailController.text, passwordController.text);
+                              if (authViewModel.currentUser != null) {
+                                Navigator.pushReplacementNamed(context, '/main');
+                              } else {
+                                // Manejar error
+                              }
+                          }
                           },
                           text: "Iniciar Sesión",
                           backgroundColor: Colors.black,
@@ -122,6 +132,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             ),
           ),
         ),
+      ),
     );
   }
 }

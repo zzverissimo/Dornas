@@ -1,3 +1,4 @@
+import 'package:dornas_app/ui/screens/home/home_screen.dart';
 import 'package:dornas_app/ui/screens/initialscreen/start_screen.dart';
 import 'package:dornas_app/ui/screens/login/login_screen.dart';
 import 'package:dornas_app/ui/screens/main/main_screen.dart';
@@ -9,4 +10,5 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/login': (context) => const LoginScreen(),
   '/register': (context) => const RegisterScreen(),
   '/main': (context) => const MainScreen(),
+  '/home': (context) => const HomeScreen(),
 };
