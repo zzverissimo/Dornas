@@ -3,15 +3,15 @@ class AppUser {
   final String id;
   final String email;
   final String? displayName;
-  // final String? photoUrl;
-  // final bool canCreateEvents;
+  final String? photoUrl;
+  final bool? canCreateEvents;
 
   AppUser({
     required this.id,
     required this.email,
     this.displayName,
-    // this.photoUrl,
-    // required this.canCreateEvents,
+    this.photoUrl,
+    this.canCreateEvents,
   });
 
 
@@ -21,8 +21,8 @@ class AppUser {
       id: data['id'] as String,
       email: data['email'] as String,
       displayName: data['displayName'] as String?,
-      // photoUrl: data['photoUrl'] as String?,
-      // canCreateEvents: data['canCreateEvents'] as bool,
+      photoUrl: data['photoUrl'] as String?,
+      canCreateEvents: data['canCreateEvents'] as bool,
     );
   }
 
@@ -33,8 +33,8 @@ class AppUser {
       'id': id,
       'email': email,
       'displayName': displayName,
-      // 'photoUrl': photoUrl,
-      // 'canCreateEvents': canCreateEvents,
+      'photoUrl': photoUrl,
+      'canCreateEvents': canCreateEvents,
     };
   }
 }

@@ -1,6 +1,6 @@
 import 'package:dornas_app/ui/screens/calendar/event_screen.dart';
+import 'package:dornas_app/viewmodel/auth_view_model.dart';
 import 'package:dornas_app/viewmodel/calendar_view_model.dart';
-import 'package:dornas_app/viewmodel/login_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';

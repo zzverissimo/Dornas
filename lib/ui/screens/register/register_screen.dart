@@ -6,7 +6,7 @@ import 'package:dornas_app/ui/widgets/color_container.dart';
 import 'package:dornas_app/ui/widgets/custom_button.dart';
 import 'package:dornas_app/ui/widgets/custom_clipimage.dart';
 import 'package:dornas_app/ui/widgets/custom_validators.dart';
-import 'package:dornas_app/viewmodel/login_view_model.dart';
+import 'package:dornas_app/viewmodel/auth_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -164,68 +164,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     children: [
                       CustomButton(
                         onPressed: () async {
-                              if (_formKey.currentState!.validate()) {
-                                  await authViewModel.signUp(emailController.text, passwordController.text, nameController.text);
+                          if (_formKey.currentState!.validate()) {
+                              if (passwordController.text == confirmPasswordController.text) {
+                                  await authViewModel.signUp(emailController.text, passwordController.text, nameController.text,"", false);
                                   if(context.mounted){
-                                  if (authViewModel.currentUser != null) {
-                                    Navigator.pushReplacementNamed(context, '/main');
-                                  } }else {
-                                    // Manejar error
+                                    if (authViewModel.currentUser != null) {
+                                      Navigator.pushReplacementNamed(context, '/main');
+                                     
+                                    }else {
+                                      //manejar error de usuario no creado
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(content: Text('Error al crear el usuario. Inténtelo de nuevo'))
+                                      );
+                                    }
                                   }
-                                } else {
-                                  // Manejar error de contraseña
-                                }
-                          // if (_formKey.currentState!.validate()) {
-                          // if (passwordController.text == confirmPasswordController.text) {
-                          //   authViewModel.signUp(
-                          //     emailController.text,
-                          //     passwordController.text,
-                          //     nameController.text,
-                          //   );
-                            
-                          //   if (authViewModel.errorMessage != null) {
-                          //     authViewModel.setMessage(emailValidator(emailController.text));
-                          //       showDialog(
-                          //         context: context,
-                          //         builder: (BuildContext context) {
-                          //           return AlertDialog(
-                          //             title: const Text('Verificar email'),
-                          //             content: Text(authViewModel.errorMessage!),
-                          //             actions: [
-                          //               TextButton(
-                          //                 onPressed: () {
-                          //                   Navigator.of(context).pop();
-                          //                 },
-                          //                 child: const Text('OK'),
-                          //               ),
-                          //             ],
-                          //           );
-                          //         },
-                          //     );
-                          //   } else if (authViewModel.currentUser != null) {
-                          //     Navigator.pushReplacementNamed(context, '/main');
-                          //     }
-                          //   }
-                          // } else {
-                          //   authViewModel.setMessage(passwordValidator(passwordController.text));
-                          //     showDialog(
-                          //       context: context,
-                          //       builder: (BuildContext context) {
-                          //         return AlertDialog(
-                          //           title: const Text('Verificar contraseña'),
-                          //           content:  Text(authViewModel.errorMessage!),
-                          //           actions: [
-                          //             TextButton(
-                          //               onPressed: () {
-                          //                 Navigator.of(context).pop();
-                          //               },
-                          //               child: const Text('OK'),
-                          //             ),
-                          //           ],
-                          //         );
-                          //       },
-                          //     );
-                          // }
+                              } 
+                              else {
+                                  // Manejar error de contraseña no son iguales
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Las contraseñas no coinciden. Inténtelo de nuevo.'))
+                                  );
+                            }
+                          }
                         },
                         backgroundColor: Colors.white,
                         foregroundColor: Colors.black,

@@ -3,10 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AuthenticationService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
+ //Crea un usuario con correo electrónico y contraseña en Firebase y lo devuelve
   Future<User?> signUp(String email, String password) async {
     try {
-      UserCredential result = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
-      return result.user;
+      UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+      return userCredential.user;
     } on FirebaseAuthException catch (e) {
       // Manejo específico de excepciones de Firebase
       if (e.code == 'email-already-in-use') {
@@ -25,8 +26,8 @@ class AuthenticationService {
 
     Future<User?> signIn(String email, String password) async {
     try {
-      UserCredential result = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
-      return result.user;
+      UserCredential userCredential = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      return userCredential.user;
     } on FirebaseAuthException catch (e) {
       // Manejo específico de excepciones de Firebase
       if (e.code == 'user-not-found') {
@@ -36,10 +37,11 @@ class AuthenticationService {
       } else if (e.code == 'invalid-email') {
         throw Exception('El correo electrónico no es válido.');
       } else {
-        throw Exception('Error iniciando sesión: ${e.message}');
+        //EL usuario no está registrado ver
+        throw Exception('El usuario no está registrado: ${e.message}');
       }
     } catch (e) {
-      throw Exception('Error iniciando sesión: $e');
+      throw Exception('El usuario no está registrado: $e');
     }
   }
 
@@ -62,5 +64,10 @@ class AuthenticationService {
     } catch (e) {
       throw Exception('Error enviando el correo de restablecimiento de contraseña: $e');
     }
+  }
+
+  // Obtener el usuario actualmente autenticado
+  User? getCurrentUser() {
+    return _firebaseAuth.currentUser;
   }
 }

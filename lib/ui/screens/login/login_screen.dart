@@ -5,7 +5,7 @@ import 'package:dornas_app/ui/widgets/clip_container.dart';
 import 'package:dornas_app/ui/widgets/color_container.dart';
 import 'package:dornas_app/ui/widgets/custom_clipimage.dart';
 import 'package:dornas_app/ui/widgets/custom_validators.dart';
-import 'package:dornas_app/viewmodel/login_view_model.dart';
+import 'package:dornas_app/viewmodel/auth_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
