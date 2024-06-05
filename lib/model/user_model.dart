@@ -15,7 +15,7 @@ class AppUser {
   });
 
 
-
+  //Devuelve un objeto AppUser a partir de un mapa de Firestore
   factory AppUser.fromFirestore(Map<String, dynamic> data) {
     return AppUser(
       id: data['id'] as String,
@@ -27,7 +27,7 @@ class AppUser {
   }
 
 
-
+  //Devuelve un mapa de Firestore a partir de un objeto AppUser
   Map<String, dynamic> toMap() {
     return {
       'id': id,

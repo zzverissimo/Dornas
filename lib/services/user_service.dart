@@ -4,6 +4,16 @@ import 'package:dornas_app/model/user_model.dart';
 class UserService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  //comprueba si hay usuarios en la base de datos
+  Future<bool> hasUser(String userId) async {
+    try {
+      DocumentSnapshot snapshot = await _firestore.collection('users').doc(userId).get();
+      return snapshot.exists;
+    } catch (e) {
+      throw Exception('Error al comprobar si existe el usuario: $e');
+    }
+  }
+
   //Coge el usuario de la base de datos
   Future<AppUser?> getUser(String userId) async {
     try {

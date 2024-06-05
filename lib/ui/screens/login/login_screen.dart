@@ -1,9 +1,7 @@
 import 'package:dornas_app/ui/screens/login/widgets/login_buttons.dart';
-import 'package:dornas_app/ui/screens/login/widgets/login_form.dart';
-import 'package:dornas_app/ui/screens/register/register_screen.dart';
-import 'package:dornas_app/ui/widgets/clip_container.dart';
-import 'package:dornas_app/ui/widgets/color_container.dart';
 import 'package:dornas_app/ui/widgets/custom_clipimage.dart';
+import 'package:dornas_app/ui/widgets/custom_container.dart';
+import 'package:dornas_app/ui/widgets/custom_textformfield.dart';
 import 'package:dornas_app/ui/widgets/custom_validators.dart';
 import 'package:dornas_app/viewmodel/auth_view_model.dart';
 import 'package:flutter/material.dart';
@@ -13,31 +11,28 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() {
-    return _LoginScreenState();
-  }
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
 
   @override
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
     return Scaffold(
-        backgroundColor: const Color(0xFFBDCBE2),
-        resizeToAvoidBottomInset: true,
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
+      backgroundColor: const Color(0xFFBDCBE2),
+      resizeToAvoidBottomInset: true,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
-                ColorContainer(
+                CustomContainer(
                   width: double.infinity,
                   height: 300,
                   colors: const [
@@ -49,10 +44,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                   end: const AlignmentDirectional(0, 1),
                   stops: const [0.0, 0.5, 1.0],
                   child: Column(
-                    mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ClipContainer(
+                      CustomContainer(
                         width: 100,
                         height: 100,
                         color: Colors.white,
@@ -68,68 +62,53 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                     ],
                   ),
                 ),
-                Align(
-                  alignment: const AlignmentDirectional(0, 0),
-                  child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 16),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        LoginForm(
-                          controller: emailController,
-                          textinput: TextInputType.emailAddress,
-                          text: "Email",
-                          validator: emailValidator,
-                          obscureText: false,
-                          autofillHints: const [AutofillHints.email],
-                        ),
-                        LoginForm(
-                          controller: passwordController,
-                          textinput: TextInputType.visiblePassword,
-                          text: "Contraseña",
-                          validator: passwordValidator,
-                          obscureText: true,
-                          autofillHints: const [AutofillHints.password],
-                        ),
-                        LoginButtons(
-                          onPressed: () async {
-                           if (_formKey.currentState!.validate()) {
-                              await authViewModel.signIn(emailController.text, passwordController.text);
-                              if (context.mounted) {
-                                if (authViewModel.currentUser != null) {
-                                  Navigator.pushReplacementNamed(context, '/main');
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(authViewModel.errorMessage ?? 'Error al iniciar sesión'))
-                                  );
-                                }
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomTextFormField(
+                        controller: emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        labelText: "Email",
+                        validator: emailValidator,
+                        autofillHints: const [AutofillHints.email],
+                      ),
+                      const SizedBox(height: 16),
+                      CustomTextFormField(
+                        controller: passwordController,
+                        keyboardType: TextInputType.visiblePassword,
+                        labelText: "Contraseña",
+                        validator: passwordValidator,
+                        obscureText: true,
+                        autofillHints: const [AutofillHints.password],
+                      ),
+                      LoginButtons(
+                        onSignInPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            await authViewModel.signIn(
+                              emailController.text,
+                              passwordController.text,
+                            );
+                            if (context.mounted) {
+                              if (authViewModel.currentUser != null) {
+                                Navigator.pushReplacementNamed(context, '/main');
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(authViewModel.errorMessage ?? 'Error al iniciar sesión')),
+                                );
                               }
                             }
-                          },
-                          text: "Iniciar Sesión",
-                          backgroundColor: Colors.black,
-                          foregroundColor: Colors.white,
-                        ),
-                        LoginButtons(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const RegisterScreen()),
-                            );
-                          },
-                          text: "Registrarse",
-                          backgroundColor: Colors.white,
-                          foregroundColor: Colors.black,
-                        ),
-                        LoginButtons(
-                          onPressed: () {},
-                          text: "Olivdé mi contraseña",
-                          backgroundColor: Colors.black,
-                          foregroundColor: Colors.white,
-                        ),
-                      ],
-                    ),
+                          }
+                        },
+                        onRegisterPressed: () {
+                          Navigator.pushNamed(context, '/register');
+                        },
+                        onForgotPassPressed: () {
+                          // Lógica para olvidé mi contraseña
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ],

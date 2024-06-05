@@ -12,7 +12,7 @@ class AnimationInfo {
     required this.effects,
     this.loop = false,
     this.reverse = false,
-    this.applyInitialState = true,
+    this.applyInitialState = true, required List<Object> Function() effectsBuilder,
   });
   final AnimationTrigger trigger;
   final List<Effect<dynamic>> effects;

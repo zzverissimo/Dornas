@@ -1,4 +1,3 @@
-
 String? emailValidator(String? value) {
   if (value == null || value.trim().isEmpty) {
     return 'Introduce tu email, el campo está vacío';
@@ -7,9 +6,9 @@ String? emailValidator(String? value) {
   if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
     return 'Por favor, introduce un email válido';
   }
-  // Verifica que el email contenga uno de los dominios permitidos
-  if (!value.contains('@gmail.com') && !value.contains('@hotmail.com') && !value.contains('@outlook.com')) {
-    return 'El email debe ser de dominio @gmail.com, @hotmail.com o @outlook.com';
+  // Verifica que el email termine con uno de los dominios permitidos
+  if (!value.endsWith('@gmail.com') && !value.endsWith('@hotmail.com')) {
+    return 'El email no termina en @gmail.com, @hotmail.com';
   }
   return null;
 }
@@ -45,6 +44,16 @@ String? nameValidator(String? value) {
   }
   if (RegExp(r'\d').hasMatch(value)) {
     return 'El nombre no puede contener números';
+  }
+  return null;
+}
+
+String? confirmPasswordValidator(String? value, String password) {
+  if (value == null || value.trim().isEmpty) {
+    return 'Introduce tu contraseña, el campo está vacío';
+  }
+  if (value != password) {
+    return 'Las contraseñas no coinciden';
   }
   return null;
 }

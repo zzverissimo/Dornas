@@ -24,14 +24,14 @@ class StartButtons extends StatelessWidget {
         children: [
           CustomButton(
             text: "Iniciar Sesión",
-            foregroundColor: const Color(0xFF101213),
+            foregroundColor: Colors.black,
             backgroundColor: Colors.white,
             onPressed: onSignInPressed,
           ),
           CustomButton(
             text: "Registrarse",
             foregroundColor: Colors.white,
-            backgroundColor: const Color(0xFF101213),
+            backgroundColor: Colors.black,
             onPressed: onRegisterPressed,
           ),
         ],

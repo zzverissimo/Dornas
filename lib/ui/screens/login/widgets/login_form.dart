@@ -1,40 +1,43 @@
-
 import 'package:dornas_app/ui/widgets/custom_textformfield.dart';
 import 'package:flutter/material.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({
-    required this.textinput,
-    required this.text,
-    required this.validator,
-    required this.obscureText,
-    required this.autofillHints,
-    this.controller,
-    super.key});
+    required this.emailController,
+    required this.passwordController,
+    required this.emailValidator,
+    required this.passwordValidator,
+    super.key,
+  });
 
-  final TextInputType textinput;
-  final TextEditingController? controller;
-  final String text;
-  final String? Function(String?) validator;
-  final bool obscureText;
-  final List<String> autofillHints;
-
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
+  final String? Function(String?) emailValidator;
+  final String? Function(String?) passwordValidator;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-       padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 16),
-       child: SizedBox(
-        width: double.infinity,
-        child: CustomTextFormField(
-          labelText: text,
-          obscureText: obscureText,
-          keyboardType: textinput,
-          autofillHints: autofillHints,
-          validator: validator,
-          controller: controller,
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CustomTextFormField(
+          controller: emailController,
+          keyboardType: TextInputType.emailAddress,
+          labelText: "Email",
+          validator: emailValidator,
+          autofillHints: const [AutofillHints.email],
         ),
-      ),
+        const SizedBox(height: 16),
+        CustomTextFormField(
+          controller: passwordController,
+          keyboardType: TextInputType.visiblePassword,
+          labelText: "Contraseña",
+          validator: passwordValidator,
+          obscureText: true,
+          autofillHints: const [AutofillHints.password],
+        ),
+      ],
     );
   }
 }

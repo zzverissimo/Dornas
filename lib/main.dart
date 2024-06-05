@@ -24,6 +24,7 @@ void main() async {
 
   // Verifica el estado de inicio de sesión
    // Verifica el estado de inicio de sesión
+  
   bool isLoggedIn = true;
   AuthViewModel auth = AuthViewModel();
   AppUser? user = await auth.getUserSession();
@@ -33,7 +34,9 @@ void main() async {
 
 
   print('isLoggedIn: $isLoggedIn');
-  print('User: ${user}');
+  print('User: ${user?.email}');
+  print('User: ${user?.canCreateEvents}');
+
 
   runApp(   
     MultiProvider(

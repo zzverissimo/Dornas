@@ -24,6 +24,7 @@ class AuthenticationService {
     }
   }
 
+  //Inicia sesión con correo electrónico y contraseña en Firebase y devuelve el usuario
     Future<User?> signIn(String email, String password) async {
     try {
       UserCredential userCredential = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
@@ -45,10 +46,12 @@ class AuthenticationService {
     }
   }
 
+  //Cierra la sesión del usuario actual
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
   }
 
+  //Envía un correo electrónico de restablecimiento de contraseña a un usuario
  Future<void> sendPasswordResetEmail(String email) async {
     try {
       await _firebaseAuth.sendPasswordResetEmail(email: email);

@@ -9,9 +9,7 @@ class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key});
 
   @override
-  State<CalendarScreen> createState(){
-    return _CalendarScreenState();
-  }
+  State<CalendarScreen> createState() => _CalendarScreenState();
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
@@ -22,12 +20,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
   @override
   void initState() {
     super.initState();
-    Provider.of<CalendarViewModel>(context, listen: false).fetchEvents();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<CalendarViewModel>(context, listen: false).fetchEvents();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-
     final eventViewModel = Provider.of<CalendarViewModel>(context);
     final authViewModel = Provider.of<AuthViewModel>(context);
 
@@ -48,7 +47,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             onDaySelected: (selectedDay, focusedDay) {
               setState(() {
                 _selectedDay = selectedDay;
-                _focusedDay = focusedDay; // update `_focusedDay` here as well
+                _focusedDay = focusedDay;
               });
             },
             onFormatChanged: (format) {
@@ -67,9 +66,40 @@ class _CalendarScreenState extends State<CalendarScreen> {
               itemCount: eventViewModel.events.length,
               itemBuilder: (context, index) {
                 final event = eventViewModel.events[index];
-                return ListTile(
-                  title: Text(event.title),
-                  subtitle: Text(event.date.toString()),
+                return Dismissible(
+                  key: Key(event.id),
+                  direction: DismissDirection.endToStart,
+                  confirmDismiss: (direction) async {
+                    bool canDelete = await authViewModel.canUserCreateEvents();
+                    if (!canDelete) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('No tienes permisos para eliminar eventos')),
+                      );
+                      return false;
+                    }
+                    return true;
+                  },
+                  onDismissed: (direction) async {
+                    await eventViewModel.deleteEvent(event.id);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('${event.title} eliminado')),
+                    );
+                    setState(() {
+                      eventViewModel.events.removeAt(index); // Eliminar el evento de la lista
+                    });
+                  },
+                  background: Container(
+                    color: Colors.red,
+                    alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: const Icon(Icons.delete, color: Colors.white),
+                  ),
+                  child: Card(
+                    child: ListTile(
+                      title: Text(event.title),
+                      subtitle: Text(event.date.toString()),
+                    ),
+                  ),
                 );
               },
             ),
@@ -86,7 +116,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             );
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
-             const SnackBar(content: Text('No tienes permisos para crear eventos')),
+              const SnackBar(content: Text('No tienes permisos para crear eventos')),
             );
           }
         },

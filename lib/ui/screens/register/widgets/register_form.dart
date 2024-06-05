@@ -3,21 +3,22 @@ import 'package:flutter/material.dart';
 
 class RegisterForm extends StatelessWidget {
   const RegisterForm({
-    this.width, 
-    this.height, 
+    this.width = double.infinity,
+    this.height,
     this.controller,
     required this.labelText,
     this.fontFamily = 'Rubik',
-    this.keyboardType = TextInputType.emailAddress,
+    required this.keyboardType,
     this.validator,
     this.onSaved,
     this.focusNode,
     this.autofocus = false,
     this.autofillHints,
     this.obscureText = false,
-    super.key}) ;
+    super.key,
+  });
 
-  final double? width;
+  final double width;
   final double? height;
   final TextEditingController? controller;
   final String labelText;
@@ -30,11 +31,8 @@ class RegisterForm extends StatelessWidget {
   final Iterable<String>? autofillHints;
   final bool obscureText;
 
-  
-
-
   @override
-  Widget build(context) {
+  Widget build(BuildContext context) {
     return SizedBox(
       width: width,
       height: height,
@@ -49,7 +47,7 @@ class RegisterForm extends StatelessWidget {
         autofocus: autofocus,
         autofillHints: autofillHints,
         obscureText: obscureText,
-      )
+      ),
     );
   }
 }

@@ -1,5 +1,5 @@
-import 'package:dornas_app/ui/screens/initialscreen/widgets/start_buttons.dart';
-import 'package:dornas_app/ui/screens/initialscreen/widgets/widget_pageview.dart';
+import 'package:dornas_app/ui/screens/startscreen/widgets/start_buttons.dart';
+import 'package:dornas_app/ui/screens/startscreen/widgets/widget_pageview.dart';
 import 'package:flutter/material.dart';
 
 class StartScreen extends StatefulWidget {
@@ -40,10 +40,10 @@ class _StartScreenState extends State<StartScreen> {
               ),
               StartButtons(
                 onSignInPressed: () {
-                   Navigator.pushReplacementNamed(context, '/login');
+                   Navigator.pushNamed(context, '/login');
                 },
                 onRegisterPressed: () {
-                   Navigator.pushReplacementNamed(context, '/register');
+                   Navigator.pushNamed(context, '/register');
                 },
               ),
             ],

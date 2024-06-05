@@ -1,6 +1,17 @@
-import 'package:dornas_app/ui/screens/register/widgets/constants.dart';
 import 'package:dornas_app/ui/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
+
+enum GradientType {
+  linear,
+  radial,
+}
+
+enum GradientDirection {
+  btt,
+  ltr,
+  rtl,
+  ttb,
+}
 
 class GradientText extends StatelessWidget {
   final List<Color> colors;

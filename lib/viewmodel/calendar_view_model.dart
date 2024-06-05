@@ -1,3 +1,6 @@
+
+
+
 import 'package:dornas_app/model/event_model.dart';
 import 'package:dornas_app/services/event_service.dart';
 import 'package:flutter/material.dart';
@@ -38,32 +41,33 @@ class CalendarViewModel extends ChangeNotifier {
     }
   }
 
-
-
   Future<void> addEvent(Event event) async {
-
     setLoading(true);
-
     setMessage(null);
 
     try {
-
       await _eventService.addEvent(event);
-
       _events.add(event);
-
       notifyListeners();
-
     } catch (e) {
-
       setMessage(e.toString());
-
     } finally {
-
       setLoading(false);
-
     }
-
   }
 
+  Future<void> deleteEvent(String eventId) async {
+    setLoading(true);
+    setMessage(null);
+
+    try {
+      await _eventService.deleteEvent(eventId);
+      _events.removeWhere((event) => event.id == eventId);
+      notifyListeners();
+    } catch (e) {
+      setMessage(e.toString());
+    } finally {
+      setLoading(false);
+    }
+  }
 }

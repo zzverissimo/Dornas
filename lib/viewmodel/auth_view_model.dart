@@ -125,6 +125,8 @@ class AuthViewModel extends ChangeNotifier {
     await prefs.setString('userId', user.id);
     await prefs.setString('userEmail', user.email);
     await prefs.setString('userDisplayName', user.displayName ?? '');
+    await prefs.setString('userPhotoUrl', user.photoUrl ?? '');
+    await prefs.setBool('userCanCreateEvents', user.canCreateEvents ?? false);
   }
 
   Future<void> _clearUserSession() async {
@@ -132,6 +134,8 @@ class AuthViewModel extends ChangeNotifier {
     await prefs.remove('userId');
     await prefs.remove('userEmail');
     await prefs.remove('userDisplayName');
+    await prefs.remove('userPhotoUrl');
+    await prefs.remove('userCanCreateEvents');
   }
 
   Future<AppUser?> getUserSession() async {
@@ -139,13 +143,19 @@ class AuthViewModel extends ChangeNotifier {
     String? userId = prefs.getString('userId');
     String? userEmail = prefs.getString('userEmail');
     String? userDisplayName = prefs.getString('userDisplayName');
+    String? userPhotoUrl = prefs.getString('userPhotoUrl');
+    bool? userCanCreateEvents = prefs.getBool('userCanCreateEvents');
 
-    if (userId != null && userEmail != null) {
-      return AppUser(
+    if (userId != null && userEmail != null && userDisplayName != null && userPhotoUrl != null) {
+      _currentUser = AppUser(
         id: userId,
         email: userEmail,
         displayName: userDisplayName,
+        photoUrl: userPhotoUrl,
+        canCreateEvents: userCanCreateEvents ?? false,
       );
+      return _currentUser;
+
     }
     return null;
   }
