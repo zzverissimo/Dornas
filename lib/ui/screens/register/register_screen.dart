@@ -29,7 +29,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
-    final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       backgroundColor: const Color(0xFFBDCBE2),
