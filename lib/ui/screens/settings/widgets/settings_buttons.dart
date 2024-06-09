@@ -14,7 +14,7 @@ class SettingsLogoutButton extends StatelessWidget {
         padding: const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
         child: CustomButton(
           onPressed: onPressed,
-          text: 'Log Out',
+          text: 'Cerrar sesión',
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
           width: 150,

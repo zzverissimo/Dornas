@@ -39,48 +39,55 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: TabBarView(
-          controller: tabController,
-          dragStartBehavior: DragStartBehavior.down,
-          physics: const BouncingScrollPhysics(),
-          children: const [
-            HomeScreen(),
-            MapScreen(),
-            CalendarScreen(),
-            SettingsScreen(),
-            ChatScreen(),
-          ],
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: currentPage,
-          onTap: changePage,
-          type: BottomNavigationBarType.fixed,
-          selectedItemColor: Colors.blue,
-          unselectedItemColor: Colors.black,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.map),
-              label: 'Map',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today),
-              label: 'Calendar',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.chat),
-              label: 'Chat',
-            ),
-          ],
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool didPop) {
+        // Handling pop behavior. In this case, it does nothing because canPop is false.
+        if (didPop) return;
+      },
+      child: SafeArea(
+        child: Scaffold(
+          body: TabBarView(
+            controller: tabController,
+            dragStartBehavior: DragStartBehavior.down,
+            physics: const BouncingScrollPhysics(),
+            children: const [
+              HomeScreen(),
+              MapScreen(),
+              CalendarScreen(),
+              SettingsScreen(),
+              ChatScreen(),
+            ],
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: currentPage,
+            onTap: changePage,
+            type: BottomNavigationBarType.fixed,
+            selectedItemColor: Colors.blue,
+            unselectedItemColor: Colors.black,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.map),
+                label: 'Map',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.calendar_today),
+                label: 'Calendar',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.settings),
+                label: 'Settings',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.chat),
+                label: 'Chat',
+              ),
+            ],
+          ),
         ),
       ),
     );
