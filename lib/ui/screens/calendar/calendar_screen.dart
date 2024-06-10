@@ -33,6 +33,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Calendario'),
+        leading: const SizedBox.shrink(),
       ),
       body: Column(
         children: [
@@ -70,7 +71,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   key: Key(event.id),
                   direction: DismissDirection.endToStart,
                   confirmDismiss: (direction) async {
-                    bool canDelete = await authViewModel.canUserCreateEvents();
+                    bool canDelete = authViewModel.currentUser?.canCreateEvents ?? false;
                     if (!canDelete) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('No tienes permisos para eliminar eventos')),
@@ -108,7 +109,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          bool canCreateEvent = await authViewModel.canUserCreateEvents();
+          bool canCreateEvent = authViewModel.currentUser?.canCreateEvents ?? false;
+          print(authViewModel.currentUser?.canCreateEvents);
+          print("Esto es $canCreateEvent");
+          print(authViewModel.getUserSession());
           if (canCreateEvent) {
             Navigator.push(
               context,

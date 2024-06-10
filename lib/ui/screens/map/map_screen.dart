@@ -13,6 +13,7 @@ class MapScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mapa'),
+        leading: const SizedBox.shrink(),
       ),
       body: mapViewModel.isLoading
           ? const Center(child: CircularProgressIndicator())

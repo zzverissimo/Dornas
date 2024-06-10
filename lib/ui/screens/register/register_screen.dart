@@ -139,28 +139,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           validator: (value) => confirmPasswordValidator(value, passwordController.text),
                         ),
                         const SizedBox(height: 32),
-                        RegisterButtons(
-                          onRegisterPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              await authViewModel.signUp(
-                                emailController.text,
-                                passwordController.text,
-                                nameController.text,
-                                _selectedImage?.path ?? "",
-                                false,
-                              );
-                              if (context.mounted) {
-                                if (authViewModel.currentUser != null) {
-                                  Navigator.pushReplacementNamed(context, '/main');
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text('El usuario ya está registrado. Inicia sesión')),
-                                  );
+                        if (authViewModel.isLoading)
+                          const Center(child: CircularProgressIndicator()),
+                        if (!authViewModel.isLoading)
+                          RegisterButtons(
+                            onRegisterPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                await authViewModel.signUp(
+                                  emailController.text,
+                                  passwordController.text,
+                                  nameController.text,
+                                  _selectedImage?.path ?? "",
+                                  false,
+                                );
+                                if (context.mounted) {
+                                  if (authViewModel.currentUser != null) {
+                                    Navigator.pushReplacementNamed(context, '/main');
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text(authViewModel.errorMessage ?? 'Error al registrar')),
+                                    );
+                                  }
                                 }
                               }
-                            }
-                          },
-                        ),
+                            },
+                          ),
                         const SizedBox(height: 16),
                       ],
                     ),

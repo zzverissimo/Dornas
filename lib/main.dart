@@ -58,7 +58,7 @@ class DornasApp extends StatelessWidget {
         useMaterial3: true,
         colorSchemeSeed: Colors.blue,
       ),
-      initialRoute: isLoggedIn ? '/main' : '/',
+      initialRoute: isLoggedIn ? '/main' : '/start',
       routes: appRoutes, // Usa las rutas definidas
     );
   }

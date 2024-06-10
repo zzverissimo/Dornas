@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dornas_app/model/user_model.dart';
 import 'package:dornas_app/services/auth_service.dart';
 import 'package:dornas_app/services/user_service.dart';
@@ -6,16 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthViewModel extends ChangeNotifier {
-  // AuthViewModel() {
-  //   _loadUserSession();
-  // }
-
   final AuthenticationService _authService = AuthenticationService();
   final UserService _userService = UserService();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   AppUser? _currentUser;
-
-  //Me devuelve el app user actual
   AppUser? get currentUser => _currentUser;
 
   bool _isLoading = false;
@@ -49,8 +45,8 @@ class AuthViewModel extends ChangeNotifier {
         );
         await _userService.updateUser(newUser);
         _currentUser = newUser;
-        //Guarda la sesión del usuario
         await _saveUserSession(newUser);
+        _listenToUserChanges(user.uid); // Escuchar cambios en tiempo real
         notifyListeners();
       }
     } catch (e) {
@@ -64,14 +60,13 @@ class AuthViewModel extends ChangeNotifier {
     setLoading(true);
     setMessage(null);
     try {
-      //Coge el usuario de Firebase
       User? user = await _authService.signIn(email, password);
       if (user != null) {
-        //Coge el usuario de Firestore en base al usuario de Firebase
         AppUser? appUser = await _userService.getUser(user.uid);
         if (appUser != null) {
           _currentUser = appUser;
           await _saveUserSession(appUser);
+          _listenToUserChanges(user.uid); // Escuchar cambios en tiempo real
           notifyListeners();
         } else {
           setMessage('Usuario no encontrado en Firestore.');
@@ -113,13 +108,6 @@ class AuthViewModel extends ChangeNotifier {
     }
   }
 
-    Future<bool> canUserCreateEvents() async {
-    if (_currentUser != null) {
-      return await _userService.canUserCreateEvents(_currentUser!.id);
-    }
-    return false;
-  }
-
   Future<void> _saveUserSession(AppUser user) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('userId', user.id);
@@ -154,9 +142,32 @@ class AuthViewModel extends ChangeNotifier {
         photoUrl: userPhotoUrl,
         canCreateEvents: userCanCreateEvents ?? false,
       );
+      _listenToUserChanges(userId);  // Escuchar cambios en tiempo real
       return _currentUser;
-
     }
     return null;
+  }
+
+  void _listenToUserChanges(String userId) {
+    _firestore.collection('users').doc(userId).snapshots().listen((snapshot) {
+      if (snapshot.exists) {
+        final data = snapshot.data() as Map<String, dynamic>;
+        _currentUser = AppUser(
+          id: _currentUser!.id,
+          email: _currentUser!.email,
+          displayName: _currentUser!.displayName,
+          photoUrl: _currentUser!.photoUrl,
+          canCreateEvents: data['canCreateEvents'] ?? false,
+        );
+        notifyListeners();
+      }
+    });
+  }
+
+  Future<bool> canUserCreateEvents() async {
+    if (_currentUser != null) {
+      return _currentUser!.canCreateEvents ?? false;
+    }
+    return false;
   }
 }

@@ -83,31 +83,35 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                         obscureText: true,
                         autofillHints: const [AutofillHints.password],
                       ),
-                      LoginButtons(
-                        onSignInPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            await authViewModel.signIn(
-                              emailController.text,
-                              passwordController.text,
-                            );
-                            if (context.mounted) {
-                              if (authViewModel.currentUser != null) {
-                                Navigator.pushReplacementNamed(context, '/main');
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(authViewModel.errorMessage ?? 'Error al iniciar sesión')),
-                                );
+                      const SizedBox(height: 16),
+                      if (authViewModel.isLoading)
+                        const Center(child: CircularProgressIndicator()),
+                      if (!authViewModel.isLoading)
+                        LoginButtons(
+                          onSignInPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              await authViewModel.signIn(
+                                emailController.text,
+                                passwordController.text,
+                              );
+                              if (context.mounted) {
+                                if (authViewModel.currentUser != null) {
+                                  Navigator.pushReplacementNamed(context, '/main');
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(authViewModel.errorMessage ?? 'Error al iniciar sesión')),
+                                  );
+                                }
                               }
                             }
-                          }
-                        },
-                        onRegisterPressed: () {
-                          Navigator.pushNamed(context, '/register');
-                        },
-                        onForgotPassPressed: () {
-                          // Lógica para olvidé mi contraseña
-                        },
-                      ),
+                          },
+                          onRegisterPressed: () {
+                            Navigator.pushNamed(context, '/register');
+                          },
+                          onForgotPassPressed: () {
+                            // Lógica para olvidé mi contraseña
+                          },
+                        ),
                     ],
                   ),
                 ),

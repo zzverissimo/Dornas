@@ -13,6 +13,7 @@ class ChatScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Chat'),
+        leading: const SizedBox.shrink(),
       ),
       body: Column(
         children: [

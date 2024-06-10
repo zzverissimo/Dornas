@@ -5,7 +5,7 @@ import 'package:dornas_app/ui/screens/startscreen/start_screen.dart';
 import 'package:flutter/material.dart';
 
 final Map<String, WidgetBuilder> appRoutes = {
-  '/': (context) => const StartScreen(),
+  '/start': (context) => const StartScreen(),
   '/login': (context) => const LoginScreen(),
   '/register': (context) => const RegisterScreen(),
   '/main': (context) => const MainScreen(),

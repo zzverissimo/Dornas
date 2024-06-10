@@ -78,12 +78,23 @@ class _SettingsScreenWidgetState extends State<SettingsScreen>
                 // Acción para términos de servicio
               },
             ),
-            SettingsLogoutButton(
-              onPressed: () async {
-                await authViewModel.signOut();
-                Navigator.pushReplacementNamed(context, '/login_page');
-              },
-            ),
+            if (authViewModel.isLoading)
+              const Center(child: CircularProgressIndicator()),
+            if (!authViewModel.isLoading)
+              SettingsLogoutButton(
+                onPressed: () async {
+                  await authViewModel.signOut();
+                  if (context.mounted) {
+                    if (authViewModel.errorMessage == null) {
+                      Navigator.pushReplacementNamed(context, '/start');
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(authViewModel.errorMessage ?? 'Error al cerrar sesión')),
+                      );
+                    }
+                  }
+                },
+              ),
           ],
         ),
       ),

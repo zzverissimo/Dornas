@@ -8,7 +8,7 @@ class StartScreen extends StatefulWidget {
   @override
   State<StartScreen> createState() {
     return _StartScreenState();
-  } 
+  }
 }
 
 class _StartScreenState extends State<StartScreen> {
@@ -28,8 +28,9 @@ class _StartScreenState extends State<StartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return PopScope(
+      canPop: false, // Evita que el usuario pueda hacer marcha atrás
+      child: Scaffold(
         backgroundColor: const Color(0xFFF1F4F8),
         body: SafeArea(
           child: Column(
@@ -40,10 +41,10 @@ class _StartScreenState extends State<StartScreen> {
               ),
               StartButtons(
                 onSignInPressed: () {
-                   Navigator.pushNamed(context, '/login');
+                  Navigator.pushNamed(context, '/login');
                 },
                 onRegisterPressed: () {
-                   Navigator.pushNamed(context, '/register');
+                  Navigator.pushNamed(context, '/register');
                 },
               ),
             ],
@@ -53,4 +54,3 @@ class _StartScreenState extends State<StartScreen> {
     );
   }
 }
-
