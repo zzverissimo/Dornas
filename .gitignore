@@ -64,7 +64,14 @@ analysis_options.yaml
 devtools_options.yaml
 
 #Más general
-android
-ios
 .metadata
 .vscode
+
+#Plataformas
+android
+ios
+linux
+macos
+test
+web
+windows
