@@ -42,5 +42,13 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-DORNAS_APP/android
-DORNAS_APP/ios
+# Environment variables
+.env
+
+# Firebase configuration files (if you choose to ignore them)
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+
+# Android and iOS configuration files (if you choose to ignore them)
+android/app/src/main/AndroidManifest.xml
+ios/Runner/AppDelegate.swift

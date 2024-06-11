@@ -48,7 +48,7 @@
 
     <!-- Google Maps API Key -->
     <key>GMSApiKey</key>
-    <string>TU_CLAVE_DE_API</string>
+    <string>"AIzaSyAUJu5qL-rqfFaZnqPBqG8tVscbtQX2r9M"</string>
 
     <!-- Permisos de ubicación (opcional) -->
     <key>NSLocationWhenInUseUsageDescription</key>
