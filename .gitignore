@@ -47,7 +47,7 @@ app.*.map.json
 
 # Firebase configuration files (if you choose to ignore them)
 android/app/google-services.json
-ios/Runner/GoogleService-Info.plist
+ios/Runner/Info.plist
 
 # Android and iOS configuration files (if you choose to ignore them)
 android/app/src/main/AndroidManifest.xml
