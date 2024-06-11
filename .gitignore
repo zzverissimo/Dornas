@@ -48,7 +48,23 @@ app.*.map.json
 # Firebase configuration files (if you choose to ignore them)
 android/app/google-services.json
 ios/Runner/Info.plist
+firebase.json
 
 # Android and iOS configuration files (if you choose to ignore them)
 android/app/src/main/AndroidManifest.xml
 ios/Runner/AppDelegate.swift
+
+# Images
+assets
+
+#Pubspec
+pubspec.lock
+pubspec.yaml
+analysis_options.yaml   
+devtools_options.yaml
+
+#Más general
+android
+ios
+.metadata
+.vscode
