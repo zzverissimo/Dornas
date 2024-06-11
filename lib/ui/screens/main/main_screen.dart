@@ -3,7 +3,6 @@ import 'package:dornas_app/ui/screens/chat/chat_screen.dart';
 import 'package:dornas_app/ui/screens/home/home_screen.dart';
 import 'package:dornas_app/ui/screens/map/map_screen.dart';
 import 'package:dornas_app/ui/screens/settings/settings_screen.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatefulWidget {
@@ -49,8 +48,7 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
         child: Scaffold(
           body: TabBarView(
             controller: tabController,
-            dragStartBehavior: DragStartBehavior.down,
-            physics: const BouncingScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(), // Disable swipe navigation
             children: const [
               HomeScreen(),
               MapScreen(),

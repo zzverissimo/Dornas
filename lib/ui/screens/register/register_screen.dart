@@ -25,6 +25,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController confirmPasswordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   File? _selectedImage;
+  String? _imageError;
 
   @override
   Widget build(BuildContext context) {
@@ -100,9 +101,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           child: UserImagePicker(onImagePicked: (pickedImage) {
                             setState(() {
                               _selectedImage = pickedImage;
+                              _imageError = null; // Clear error message
                             });
                           }),
                         ),
+                        if (_imageError != null)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Text(
+                              _imageError!,
+                              style: const TextStyle(color: Colors.red, fontSize: 12),
+                            ),
+                          ),
                         const SizedBox(height: 16),
                         CustomTextFormField(
                           controller: nameController,
@@ -144,12 +154,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         if (!authViewModel.isLoading)
                           RegisterButtons(
                             onRegisterPressed: () async {
-                              if (_formKey.currentState!.validate()) {
+                              if (_formKey.currentState!.validate() && _selectedImage != null) {
                                 await authViewModel.signUp(
                                   emailController.text,
                                   passwordController.text,
                                   nameController.text,
-                                  _selectedImage?.path ?? "",
+                                  _selectedImage!.path,
                                   false,
                                 );
                                 if (context.mounted) {
@@ -161,6 +171,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     );
                                   }
                                 }
+                              } else {
+                                setState(() {
+                                  _imageError = _selectedImage == null ? 'Por favor, añade una imagen.' : null;
+                                });
                               }
                             },
                           ),

@@ -1,9 +1,14 @@
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 
 class MapService {
-  Future<LatLng> getCurrentLocation() async {
-    // Implementar lógica para obtener la ubicación actual
-    return const LatLng(42.54817461982462, -8.859133265213249); // Praia da Canteira
-  }
+  Stream<Position> getCurrentLocationStream() {
+    // Configura las opciones de Geolocator
+    LocationSettings locationSettings = const LocationSettings(
+      accuracy: LocationAccuracy.high, // Establece la precisión
+      distanceFilter: 10, // Establece el filtro de distancia
+    );
 
+    // Devuelve el stream de posiciones
+    return Geolocator.getPositionStream(locationSettings: locationSettings);
+  }
 }
