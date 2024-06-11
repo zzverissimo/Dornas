@@ -49,6 +49,7 @@ app.*.map.json
 android/app/google-services.json
 ios/Runner/Info.plist
 firebase.json
+lib/firebase_options.dart
 
 # Android and iOS configuration files (if you choose to ignore them)
 android/app/src/main/AndroidManifest.xml
