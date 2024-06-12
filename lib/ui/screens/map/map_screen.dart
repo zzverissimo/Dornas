@@ -13,6 +13,9 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   GoogleMapController? _controller;
+  LatLng? _startPosition;
+  LatLng? _endPosition;
+  bool _shouldUpdateLocation = true;
 
   @override
   void initState() {
@@ -33,10 +36,8 @@ class _MapScreenState extends State<MapScreen> {
 
   void _updateLocation() {
     final mapViewModel = Provider.of<MapViewModel>(context, listen: false);
-    if (_controller != null && mapViewModel.currentLocation != null) {
-      _controller?.animateCamera(
-        CameraUpdate.newLatLngZoom(mapViewModel.currentLocation!, 14.0),
-      );
+    if (_controller != null && mapViewModel.currentLocation != null && _shouldUpdateLocation) {
+      // No actualizar la cámara automáticamente
     }
   }
 
@@ -54,6 +55,39 @@ class _MapScreenState extends State<MapScreen> {
     super.dispose();
   }
 
+  void _moveCameraToLocation(LatLng location) {
+    _controller?.animateCamera(
+      CameraUpdate.newLatLngZoom(location, 14.0),
+    );
+  }
+
+  void _addRoute() {
+    final mapViewModel = Provider.of<MapViewModel>(context, listen: false);
+    if (_startPosition != null && _endPosition != null) {
+      mapViewModel.addPolyline([_startPosition!, _endPosition!]);
+    }
+  }
+
+  void _clearRoutes() {
+    final mapViewModel = Provider.of<MapViewModel>(context, listen: false);
+    mapViewModel.clearPolylines();
+    setState(() {
+      _startPosition = null;
+      _endPosition = null;
+    });
+  }
+
+  void _onMapTypeChanged(dynamic value) {
+    final mapViewModel = Provider.of<MapViewModel>(context, listen: false);
+    setState(() {
+      _shouldUpdateLocation = false; // Desactivar la actualización de la ubicación
+    });
+    mapViewModel.setMapType(value);
+    setState(() {
+      _shouldUpdateLocation = true; // Reactivar la actualización de la ubicación
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final mapViewModel = Provider.of<MapViewModel>(context);
@@ -61,7 +95,51 @@ class _MapScreenState extends State<MapScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mapa'),
-        leading: const SizedBox.shrink(),
+        actions: [
+          DropdownButton<dynamic>(
+            value: mapViewModel.isOpenSeaMap ? 'openseamap' : mapViewModel.selectedMapType,
+            items: const [
+              DropdownMenuItem(
+                value: MapType.normal,
+                child: Text("Normal"),
+              ),
+              DropdownMenuItem(
+                value: MapType.satellite,
+                child: Text("Satélite"),
+              ),
+              DropdownMenuItem(
+                value: MapType.hybrid,
+                child: Text("Híbrido"),
+              ),
+              DropdownMenuItem(
+                value: MapType.terrain,
+                child: Text("Orográfico"),
+              ),
+              DropdownMenuItem(
+                value: 'openseamap',
+                child: Text("OpenSeaMap"),
+              ),
+            ],
+            onChanged: _onMapTypeChanged,
+          ),
+          IconButton(
+            icon: const Icon(Icons.clear),
+            onPressed: _clearRoutes,
+          ),
+          IconButton(
+            icon: const Icon(Icons.directions),
+            onPressed: _addRoute,
+          ),
+          IconButton(
+            icon: const Icon(Icons.my_location),
+            onPressed: () {
+              final mapViewModel = Provider.of<MapViewModel>(context, listen: false);
+              if (mapViewModel.currentLocation != null) {
+                _moveCameraToLocation(mapViewModel.currentLocation!);
+              }
+            },
+          ),
+        ],
       ),
       body: mapViewModel.isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -71,6 +149,9 @@ class _MapScreenState extends State<MapScreen> {
                 target: mapViewModel.currentLocation ?? const LatLng(0, 0),
                 zoom: 14.0,
               ),
+              mapType: mapViewModel.isOpenSeaMap
+                  ? MapType.none
+                  : mapViewModel.selectedMapType,
               myLocationEnabled: true,
               myLocationButtonEnabled: true,
               zoomControlsEnabled: true,
@@ -78,6 +159,25 @@ class _MapScreenState extends State<MapScreen> {
               scrollGesturesEnabled: true,
               tiltGesturesEnabled: true,
               rotateGesturesEnabled: true,
+              polylines: mapViewModel.polylines,
+              tileOverlays: {
+                if (mapViewModel.baseMapTileOverlay != null)
+                  mapViewModel.baseMapTileOverlay!,
+                if (mapViewModel.openSeaMapTileOverlay != null)
+                  mapViewModel.openSeaMapTileOverlay!,
+              },
+              onTap: (LatLng position) {
+                setState(() {
+                  if (_startPosition == null) {
+                    _startPosition = position;
+                  } else if (_endPosition == null) {
+                    _endPosition = position;
+                  } else {
+                    _startPosition = position;
+                    _endPosition = null;
+                  }
+                });
+              },
             ),
     );
   }
