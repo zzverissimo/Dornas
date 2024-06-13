@@ -11,6 +11,7 @@ import 'package:dornas_app/viewmodel/auth_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -45,7 +46,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               children: [
                 CustomContainer(
                   width: double.infinity,
-                  height: 200,  // Reducir la altura del contenedor
+                  height: 200,
                   colors: const [
                     Color(0xFF67A5E6),
                     Color(0xFFB6D0E2),
@@ -58,8 +59,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CustomContainer(
-                        width: 80,  // Ajustar el tamaño del logo
-                        height: 80,  // Ajustar el tamaño del logo
+                        width: 80,
+                        height: 80,
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(16),
                         child: CustomClip(

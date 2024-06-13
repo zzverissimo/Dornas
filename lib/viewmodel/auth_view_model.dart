@@ -1,15 +1,20 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dornas_app/model/user_model.dart';
 import 'package:dornas_app/services/auth_service.dart';
 import 'package:dornas_app/services/user_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart'; // Importa Firebase Storage
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 
 class AuthViewModel extends ChangeNotifier {
   final AuthenticationService _authService = AuthenticationService();
   final UserService _userService = UserService();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance; // Añadir Firebase Storage
 
   AppUser? _currentUser;
   AppUser? get currentUser => _currentUser;
@@ -30,12 +35,15 @@ class AuthViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> signUp(String email, String password, String displayName, String photoUrl, bool canCreateEvents) async {
+  Future<void> signUp(String email, String password, String displayName, String photoPath, bool canCreateEvents) async {
     setLoading(true);
     setMessage(null);
     try {
       User? user = await _authService.signUp(email, password);
       if (user != null) {
+        // Sube la imagen a Firebase Storage
+        String photoUrl = await _uploadImage(photoPath, user.uid);
+
         AppUser newUser = AppUser(
           id: user.uid,
           email: user.email!,
@@ -43,6 +51,7 @@ class AuthViewModel extends ChangeNotifier {
           photoUrl: photoUrl,
           canCreateEvents: canCreateEvents,
         );
+
         await _userService.updateUser(newUser);
         _currentUser = newUser;
         await _saveUserSession(newUser);
@@ -53,6 +62,16 @@ class AuthViewModel extends ChangeNotifier {
       setMessage(e.toString());
     } finally {
       setLoading(false);
+    }
+  }
+
+  Future<String> _uploadImage(String filePath, String userId) async {
+    File file = File(filePath);
+    try {
+      await _storage.ref('user_images/$userId.jpg').putFile(file);
+      return await _storage.ref('user_images/$userId.jpg').getDownloadURL();
+    } catch (e) {
+      throw Exception('Error uploading image: $e');
     }
   }
 
@@ -134,7 +153,7 @@ class AuthViewModel extends ChangeNotifier {
     String? userPhotoUrl = prefs.getString('userPhotoUrl');
     bool? userCanCreateEvents = prefs.getBool('userCanCreateEvents');
 
-    if (userId != null && userEmail != null && userDisplayName != null && userPhotoUrl != null) {
+    if (userId != null && userEmail != null) {
       _currentUser = AppUser(
         id: userId,
         email: userEmail,
@@ -155,8 +174,8 @@ class AuthViewModel extends ChangeNotifier {
         _currentUser = AppUser(
           id: _currentUser!.id,
           email: _currentUser!.email,
-          displayName: _currentUser!.displayName,
-          photoUrl: _currentUser!.photoUrl,
+          displayName: data['displayName'],
+          photoUrl: data['photoUrl'],
           canCreateEvents: data['canCreateEvents'] ?? false,
         );
         notifyListeners();
