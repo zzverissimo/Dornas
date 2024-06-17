@@ -5,16 +5,15 @@ import 'package:dornas_app/model/user_model.dart';
 import 'package:dornas_app/services/auth_service.dart';
 import 'package:dornas_app/services/user_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart'; // Importa Firebase Storage
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 class AuthViewModel extends ChangeNotifier {
   final AuthenticationService _authService = AuthenticationService();
   final UserService _userService = UserService();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseStorage _storage = FirebaseStorage.instance; // Añadir Firebase Storage
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   AppUser? _currentUser;
   AppUser? get currentUser => _currentUser;
@@ -41,7 +40,6 @@ class AuthViewModel extends ChangeNotifier {
     try {
       User? user = await _authService.signUp(email, password);
       if (user != null) {
-        // Sube la imagen a Firebase Storage
         String photoUrl = await _uploadImage(photoPath, user.uid);
 
         AppUser newUser = AppUser(
@@ -55,7 +53,7 @@ class AuthViewModel extends ChangeNotifier {
         await _userService.updateUser(newUser);
         _currentUser = newUser;
         await _saveUserSession(newUser);
-        _listenToUserChanges(user.uid); // Escuchar cambios en tiempo real
+        _listenToUserChanges(user.uid);
         notifyListeners();
       }
     } catch (e) {
@@ -85,7 +83,7 @@ class AuthViewModel extends ChangeNotifier {
         if (appUser != null) {
           _currentUser = appUser;
           await _saveUserSession(appUser);
-          _listenToUserChanges(user.uid); // Escuchar cambios en tiempo real
+          _listenToUserChanges(user.uid);
           notifyListeners();
         } else {
           setMessage('Usuario no encontrado en Firestore.');
@@ -138,11 +136,7 @@ class AuthViewModel extends ChangeNotifier {
 
   Future<void> _clearUserSession() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove('userId');
-    await prefs.remove('userEmail');
-    await prefs.remove('userDisplayName');
-    await prefs.remove('userPhotoUrl');
-    await prefs.remove('userCanCreateEvents');
+    await prefs.clear();
   }
 
   Future<AppUser?> getUserSession() async {
@@ -154,6 +148,12 @@ class AuthViewModel extends ChangeNotifier {
     bool? userCanCreateEvents = prefs.getBool('userCanCreateEvents');
 
     if (userId != null && userEmail != null) {
+      bool userExists = await _userService.hasUser(userId);
+      if (!userExists) {
+        await _clearUserSession();
+        return null;
+      }
+      
       _currentUser = AppUser(
         id: userId,
         email: userEmail,
@@ -161,7 +161,7 @@ class AuthViewModel extends ChangeNotifier {
         photoUrl: userPhotoUrl,
         canCreateEvents: userCanCreateEvents ?? false,
       );
-      _listenToUserChanges(userId);  // Escuchar cambios en tiempo real
+      _listenToUserChanges(userId);
       return _currentUser;
     }
     return null;

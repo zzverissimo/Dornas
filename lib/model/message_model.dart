@@ -7,6 +7,7 @@ class Message {
   final DateTime timestamp;
   final String username;
   final String userImage;
+  final List<String> deletedBy;  // Nueva propiedad
 
   Message({
     required this.id,
@@ -15,6 +16,7 @@ class Message {
     required this.timestamp,
     required this.username,
     required this.userImage,
+    required this.deletedBy,  // Inicializar en el constructor
   });
 
   factory Message.fromFirestore(Map<String, dynamic> data) {
@@ -25,6 +27,7 @@ class Message {
       timestamp: (data['timestamp'] as Timestamp).toDate(),
       username: data['username'] as String,
       userImage: data['userImage'] as String,
+      deletedBy: List<String>.from(data['deletedBy'] ?? []),  // Inicializar lista
     );
   }
 
@@ -36,6 +39,7 @@ class Message {
       'timestamp': timestamp,
       'username': username,
       'userImage': userImage,
+      'deletedBy': deletedBy,  // Añadir a Map
     };
   }
 }

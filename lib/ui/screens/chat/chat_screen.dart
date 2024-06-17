@@ -18,7 +18,6 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
-    // Llama a fetchMessages después de un pequeño retraso para permitir que la UI se construya
     Future.delayed(Duration.zero, () {
       final chatViewModel = Provider.of<ChatViewModel>(context, listen: false);
       chatViewModel.fetchMessages();
@@ -54,6 +53,14 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Chat'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () async {
+              await chatViewModel.clearMessages();
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -121,7 +128,6 @@ class _ChatScreenState extends State<ChatScreen> {
                     focusNode: _focusNode,
                     decoration: const InputDecoration(labelText: 'Escribe un mensaje'),
                     onTap: () {
-                      // Ensure the keyboard is shown
                       _focusNode.requestFocus();
                     },
                   ),
@@ -132,7 +138,6 @@ class _ChatScreenState extends State<ChatScreen> {
                     if (_messageController.text.isNotEmpty) {
                       await chatViewModel.sendMessage(_messageController.text);
                       _messageController.clear();
-                      // Ensure the TextField regains focus
                       _focusNode.requestFocus();
                       _scrollToBottom();
                     }

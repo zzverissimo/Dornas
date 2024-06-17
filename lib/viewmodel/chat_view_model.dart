@@ -1,73 +1,61 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dornas_app/model/message_model.dart';
-import 'package:dornas_app/services/chat_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ChatViewModel extends ChangeNotifier {
-  final ChatService _chatService = ChatService();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   List<Message> _messages = [];
   List<Message> get messages => _messages;
-
   bool _isLoading = false;
   bool get isLoading => _isLoading;
-
-  String? _errorMessage;
-  String? get errorMessage => _errorMessage;
 
   ChatViewModel() {
     fetchMessages();
   }
 
-  void setLoading(bool loading) {
-    _isLoading = loading;
+  void fetchMessages() async {
+    _isLoading = true;
     notifyListeners();
-  }
 
-  void setMessage(String? message) {
-    _errorMessage = message;
-    notifyListeners();
-  }
-
-  void fetchMessages() {
-    setLoading(true);
-    _chatService.getMessages().listen((messages) {
-      _messages = messages;
-      setLoading(false);
+    final user = FirebaseAuth.instance.currentUser!;
+    _firestore.collection('messages').orderBy('timestamp').snapshots().listen((snapshot) {
+      _messages = snapshot.docs.map((doc) => Message.fromFirestore(doc.data()))
+        .where((message) => !message.deletedBy.contains(user.uid)) // Filtrar mensajes "borrados"
+        .toList();
+      _isLoading = false;
       notifyListeners();
-    }, onError: (error) {
-      setMessage(error.toString());
-      setLoading(false);
     });
   }
 
   Future<void> sendMessage(String text) async {
-    setLoading(true);
-    setMessage(null);
-    try {
-      final user = _auth.currentUser!;
-      final userData = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
-      final message = Message(
-        id: DateTime.now().toString(), // ID único para el mensaje
-        senderId: user.uid, // ID del usuario que envió el mensaje
-        text: text,
-        timestamp: DateTime.now(),
-        username: userData['displayName'],
-        userImage: userData['photoUrl'],
-      );
-      await _chatService.sendMessage(message);
-      // No es necesario volver a llamar a fetchMessages, ya que estamos usando Stream
-    } catch (e) {
-      setMessage(e.toString());
-    } finally {
-      setLoading(false);
-    }
+    final user = FirebaseAuth.instance.currentUser!;
+    final userData = await _firestore.collection('users').doc(user.uid).get();
+    final message = Message(
+      id: DateTime.now().toString(),
+      senderId: user.uid,
+      text: text,
+      timestamp: DateTime.now(),
+      username: userData['displayName'],
+      userImage: userData['photoUrl'],
+      deletedBy: [], // Inicializar lista vacía
+    );
+    await _firestore.collection('messages').doc(message.id).set(message.toMap());
   }
 
-   // Nueva función para limpiar mensajes
-  void clearMessages() {
+  Future<void> clearMessages() async {
+    final user = FirebaseAuth.instance.currentUser!;
+    // Actualiza todos los mensajes para marcar como "borrados" por el usuario actual
+    final batch = _firestore.batch();
+    final querySnapshot = await _firestore.collection('messages').get();
+    for (var doc in querySnapshot.docs) {
+      batch.update(doc.reference, {
+        'deletedBy': FieldValue.arrayUnion([user.uid])
+      });
+    }
+    await batch.commit();
+
+    // Actualiza localmente también
     _messages = [];
     notifyListeners();
   }
