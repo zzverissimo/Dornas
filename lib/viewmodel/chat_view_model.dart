@@ -65,4 +65,10 @@ class ChatViewModel extends ChangeNotifier {
       setLoading(false);
     }
   }
+
+   // Nueva función para limpiar mensajes
+  void clearMessages() {
+    _messages = [];
+    notifyListeners();
+  }
 }
