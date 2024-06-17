@@ -1,20 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Message {
-
   final String id;
   final String senderId;
   final String text;
   final DateTime timestamp;
+  final String username;
+  final String userImage;
 
   Message({
     required this.id,
     required this.senderId,
     required this.text,
     required this.timestamp,
+    required this.username,
+    required this.userImage,
   });
-
-
 
   factory Message.fromFirestore(Map<String, dynamic> data) {
     return Message(
@@ -22,6 +23,8 @@ class Message {
       senderId: data['senderId'] as String,
       text: data['text'] as String,
       timestamp: (data['timestamp'] as Timestamp).toDate(),
+      username: data['username'] as String,
+      userImage: data['userImage'] as String,
     );
   }
 
@@ -31,6 +34,8 @@ class Message {
       'senderId': senderId,
       'text': text,
       'timestamp': timestamp,
+      'username': username,
+      'userImage': userImage,
     };
   }
 }

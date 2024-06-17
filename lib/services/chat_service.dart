@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dornas_app/model/message_model.dart';
 
 class ChatService {
-
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Stream<List<Message>> getMessages() {
