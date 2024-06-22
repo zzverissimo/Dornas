@@ -7,7 +7,6 @@ import 'package:dornas_app/viewmodel/auth_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
@@ -29,17 +28,8 @@ class _SettingsScreenWidgetState extends State<SettingsScreen>
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SettingsHeader(),
+            SettingsHeader(photoUrl: user?.photoUrl),
             if (user != null) ...[
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                child: CircleAvatar(
-                  radius: 40,
-                  backgroundImage: user.photoUrl != null
-                      ? NetworkImage(user.photoUrl!)
-                      : const AssetImage('assets/images/default_avatar.png') as ImageProvider,
-                ),
-              ),
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(24, 0, 0, 0),
                 child: CustomText(

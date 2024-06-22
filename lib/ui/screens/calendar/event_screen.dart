@@ -4,15 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CreateEventScreen extends StatelessWidget {
-  CreateEventScreen({super.key});
+  final DateTime? selectedDay;
+  CreateEventScreen({super.key, this.selectedDay});
 
   final TextEditingController _titleController = TextEditingController();
-  final DateTime _selectedDate = DateTime.now();
+  final TextEditingController _maxAttendeesController = TextEditingController();
+  final TimeOfDay _selectedTime = TimeOfDay.now();
 
   @override
   Widget build(BuildContext context) {
     final calendarViewModel = Provider.of<CalendarViewModel>(context);
-    
+    final DateTime eventDate = selectedDay ?? DateTime.now();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Crear Evento'),
@@ -25,16 +28,31 @@ class CreateEventScreen extends StatelessWidget {
               controller: _titleController,
               decoration: const InputDecoration(labelText: 'Título del Evento'),
             ),
+            TextField(
+              controller: _maxAttendeesController,
+              decoration: const InputDecoration(labelText: 'Número máximo de asistentes'),
+              keyboardType: TextInputType.number,
+            ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                final event = Event(
-                  id: DateTime.now().toString(),
-                  title: _titleController.text,
-                  date: _selectedDate,
+                TimeOfDay? pickedTime = await showTimePicker(
+                  context: context,
+                  initialTime: _selectedTime,
                 );
-                await calendarViewModel.addEvent(event);
-                Navigator.pop(context);
+
+                if (pickedTime != null) {
+                  final eventDateTime = DateTime(eventDate.year, eventDate.month, eventDate.day, pickedTime.hour, pickedTime.minute);
+                  final event = Event(
+                    id: DateTime.now().toString(),
+                    title: _titleController.text,
+                    date: eventDateTime,
+                    maxAttendees: int.parse(_maxAttendeesController.text),
+                    attendees: [],
+                  );
+                  await calendarViewModel.addEvent(event);
+                  Navigator.pop(context);
+                }
               },
               child: const Text('Crear Evento'),
             ),

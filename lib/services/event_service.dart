@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dornas_app/model/event_model.dart';
 
-
 class EventService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -14,8 +13,15 @@ class EventService {
     return snapshot.docs.map((doc) => Event.fromFirestore(doc.data() as Map<String, dynamic>)).toList();
   }
 
+  Stream<QuerySnapshot> getEventsStream() {
+    return _firestore.collection('events').snapshots();
+  }
+
+  Future<void> updateEvent(Event event) async {
+    await _firestore.collection('events').doc(event.id).update(event.toMap());
+  }
+
   Future<void> deleteEvent(String eventId) async {
     await _firestore.collection('events').doc(eventId).delete();
   }
 }
-

@@ -14,16 +14,6 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // Verifica el estado de inicio de sesión
-  // AuthenticationService auth = AuthenticationService();
-  // User? user = auth.getCurrentUser();
-  // bool isLoggedIn = true;
-  // if(user == null) {
-  //   isLoggedIn = false;
-  // }
-
-  // Verifica el estado de inicio de sesión
-   // Verifica el estado de inicio de sesión
   
   bool isLoggedIn = true;
   AuthViewModel auth = AuthViewModel();
@@ -31,7 +21,6 @@ void main() async {
   if(user == null) {
     isLoggedIn = false;
   } 
-
 
   print('isLoggedIn: $isLoggedIn');
   print('User: ${user?.email}');

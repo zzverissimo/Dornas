@@ -2,7 +2,9 @@ import 'package:dornas_app/ui/widgets/custom_container.dart';
 import 'package:flutter/material.dart';
 
 class SettingsHeader extends StatelessWidget {
-  const SettingsHeader({super.key});
+  final String? photoUrl;
+
+  const SettingsHeader({super.key, this.photoUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +32,15 @@ class SettingsHeader extends StatelessWidget {
                   padding: const EdgeInsets.all(4),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(50),
-                    child: Image.asset(
-                      'assets/images/profile_image_placeholder.png',
-                      fit: BoxFit.cover,
-                    ),
+                    child: photoUrl != null
+                        ? Image.network(
+                            photoUrl!,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.asset(
+                            'assets/images/foto_perfil.png',
+                            fit: BoxFit.cover,
+                          ),
                   ),
                 ),
               ),

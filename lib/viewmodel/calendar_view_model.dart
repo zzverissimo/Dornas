@@ -1,6 +1,3 @@
-
-
-
 import 'package:dornas_app/model/event_model.dart';
 import 'package:dornas_app/services/event_service.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +7,9 @@ class CalendarViewModel extends ChangeNotifier {
 
   List<Event> _events = [];
   List<Event> get events => _events;
+
+  DateTime _selectedDay = DateTime.now();
+  DateTime get selectedDay => _selectedDay;
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -27,6 +27,11 @@ class CalendarViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setSelectedDay(DateTime selectedDay) {
+    _selectedDay = selectedDay;
+    notifyListeners();
+  }
+
   Future<void> fetchEvents() async {
     setLoading(true);
     setMessage(null);
@@ -41,14 +46,33 @@ class CalendarViewModel extends ChangeNotifier {
     }
   }
 
+  Stream<List<Event>> getEventsStream() {
+    return _eventService.getEventsStream().map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return Event.fromFirestore(doc.data() as Map<String, dynamic>);
+      }).toList();
+    });
+  }
+
   Future<void> addEvent(Event event) async {
     setLoading(true);
     setMessage(null);
 
     try {
       await _eventService.addEvent(event);
-      _events.add(event);
-      notifyListeners();
+    } catch (e) {
+      setMessage(e.toString());
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  Future<void> updateEvent(Event event) async {
+    setLoading(true);
+    setMessage(null);
+
+    try {
+      await _eventService.updateEvent(event);
     } catch (e) {
       setMessage(e.toString());
     } finally {
@@ -62,8 +86,6 @@ class CalendarViewModel extends ChangeNotifier {
 
     try {
       await _eventService.deleteEvent(eventId);
-      _events.removeWhere((event) => event.id == eventId);
-      notifyListeners();
     } catch (e) {
       setMessage(e.toString());
     } finally {
