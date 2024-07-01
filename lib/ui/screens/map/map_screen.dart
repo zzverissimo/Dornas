@@ -10,7 +10,7 @@ class MapScreen extends StatefulWidget {
   @override
   State<MapScreen> createState() {
     return _MapScreenState();
-  } 
+  }
 }
 
 class _MapScreenState extends State<MapScreen> {
@@ -154,14 +154,15 @@ class _MapScreenState extends State<MapScreen> {
               mapType: mapViewModel.isOpenSeaMap
                   ? MapType.none
                   : mapViewModel.selectedMapType,
-              myLocationEnabled: true,
-              myLocationButtonEnabled: true,
+              myLocationEnabled: false, // Desactivar el punto azul
+              myLocationButtonEnabled: false,
               zoomControlsEnabled: true,
               zoomGesturesEnabled: true,
               scrollGesturesEnabled: true,
               tiltGesturesEnabled: true,
               rotateGesturesEnabled: true,
               polylines: mapViewModel.polylines,
+              markers: mapViewModel.markers,
               tileOverlays: {
                 if (mapViewModel.baseMapTileOverlay != null)
                   mapViewModel.baseMapTileOverlay!,

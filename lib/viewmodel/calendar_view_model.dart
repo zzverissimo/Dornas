@@ -11,16 +11,8 @@ class CalendarViewModel extends ChangeNotifier {
   DateTime _selectedDay = DateTime.now();
   DateTime get selectedDay => _selectedDay;
 
-  bool _isLoading = false;
-  bool get isLoading => _isLoading;
-
   String? _errorMessage;
   String? get errorMessage => _errorMessage;
-
-  void setLoading(bool loading) {
-    _isLoading = loading;
-    notifyListeners();
-  }
 
   void setMessage(String? message) {
     _errorMessage = message;
@@ -33,16 +25,11 @@ class CalendarViewModel extends ChangeNotifier {
   }
 
   Future<void> fetchEvents() async {
-    setLoading(true);
-    setMessage(null);
-
     try {
       _events = await _eventService.getEvents();
       notifyListeners();
     } catch (e) {
       setMessage(e.toString());
-    } finally {
-      setLoading(false);
     }
   }
 
@@ -55,41 +42,35 @@ class CalendarViewModel extends ChangeNotifier {
   }
 
   Future<void> addEvent(Event event) async {
-    setLoading(true);
-    setMessage(null);
-
     try {
       await _eventService.addEvent(event);
+      _events.add(event);
+      notifyListeners();
     } catch (e) {
       setMessage(e.toString());
-    } finally {
-      setLoading(false);
     }
   }
 
   Future<void> updateEvent(Event event) async {
-    setLoading(true);
-    setMessage(null);
-
     try {
       await _eventService.updateEvent(event);
+      final index = _events.indexWhere((e) => e.id == event.id);
+      if (index != -1) {
+        _events[index] = event;
+        notifyListeners();
+      }
     } catch (e) {
       setMessage(e.toString());
-    } finally {
-      setLoading(false);
     }
   }
 
   Future<void> deleteEvent(String eventId) async {
-    setLoading(true);
-    setMessage(null);
-
     try {
       await _eventService.deleteEvent(eventId);
+      _events.removeWhere((event) => event.id == eventId);
+      notifyListeners();
     } catch (e) {
       setMessage(e.toString());
-    } finally {
-      setLoading(false);
     }
   }
 }

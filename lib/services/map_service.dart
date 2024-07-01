@@ -1,14 +1,24 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geolocator/geolocator.dart';
 
 class MapService {
-  Stream<Position> getCurrentLocationStream() {
-    // Configura las opciones de Geolocator
-    LocationSettings locationSettings = const LocationSettings(
-      accuracy: LocationAccuracy.high, // Establece la precisión
-      distanceFilter: 10, // Establece el filtro de distancia
-    );
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-    // Devuelve el stream de posiciones
+  Stream<Position> getCurrentLocationStream() {
+    LocationSettings locationSettings = const LocationSettings(
+      accuracy: LocationAccuracy.bestForNavigation,
+      distanceFilter: 5,
+    );
     return Geolocator.getPositionStream(locationSettings: locationSettings);
+  }
+
+  Future<void> updateUserLocation(String userId, Position position) async {
+    try {
+      await _firestore.collection('users').doc(userId).update({
+        'location': GeoPoint(position.latitude, position.longitude),
+      });
+    } catch (e) {
+      throw Exception('Error al actualizar la ubicación del usuario: $e');
+    }
   }
 }

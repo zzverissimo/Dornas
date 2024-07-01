@@ -51,16 +51,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
       body: StreamBuilder<List<Event>>(
         stream: eventViewModel.getEventsStream(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
           if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           }
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No hay eventos'));
-          }
-          final events = snapshot.data!;
+          final events = snapshot.data ?? [];
 
           return Column(
             children: [
@@ -117,6 +111,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   },
                 ),
               ),
+              if (events.isEmpty)
+                const Center(child: Text('No hay eventos')),
               Expanded(
                 child: ListView.builder(
                   itemCount: events.length,
@@ -127,10 +123,29 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       key: Key(event.id),
                       direction: DismissDirection.endToStart,
                       onDismissed: (direction) async {
-                        await eventViewModel.deleteEvent(event.id);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('${event.title} eliminado')),
-                        );
+                        bool canDeleteEvent = authViewModel.currentUser?.canCreateEvents ?? false;
+                        if (canDeleteEvent) {
+                          await eventViewModel.deleteEvent(event.id);
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('${event.title} eliminado')),
+                            );
+                          }
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('No tienes permisos para eliminar eventos')),
+                          );
+                          setState(() {});
+                        }
+                      },
+                      confirmDismiss: (direction) async {
+                        bool canDeleteEvent = authViewModel.currentUser?.canCreateEvents ?? false;
+                        if (!canDeleteEvent) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('No tienes permisos para eliminar eventos')),
+                          );
+                        }
+                        return canDeleteEvent;
                       },
                       background: Container(
                         color: Colors.red,
@@ -153,10 +168,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                   if (event.attendees.contains(userId)) {
                                     event.attendees.remove(userId);
                                     await eventViewModel.updateEvent(event);
+                                    setState(() {});
                                   } else {
                                     if (event.attendees.length < event.maxAttendees) {
                                       event.attendees.add(userId);
                                       await eventViewModel.updateEvent(event);
+                                      setState(() {});
                                     } else {
                                       ScaffoldMessenger.of(context).showSnackBar(
                                         const SnackBar(content: Text('El evento está completo')),
