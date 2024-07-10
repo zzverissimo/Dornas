@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthenticationService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
- //Crea un usuario con correo electrónico y contraseña en Firebase y lo devuelve
+  // Crea un usuario con correo electrónico y contraseña en Firebase y lo devuelve
   Future<User?> signUp(String email, String password) async {
     try {
       UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
@@ -11,66 +12,84 @@ class AuthenticationService {
     } on FirebaseAuthException catch (e) {
       // Manejo específico de excepciones de Firebase
       if (e.code == 'email-already-in-use') {
-        throw Exception('El correo electrónico ya está en uso.');
+        throw ('El correo electrónico ya está en uso.');
       } else if (e.code == 'weak-password') {
-        throw Exception('La contraseña es demasiado débil.');
+        throw ('La contraseña es demasiado débil.');
       } else if (e.code == 'invalid-email') {
-        throw Exception('El correo electrónico no es válido.');
+        throw ('El correo electrónico no es válido.');
       } else {
-        throw Exception('Error registrando usuario: ${e.message}');
+        throw ('Error registrando usuario: ${e.message}');
       }
     } catch (e) {
       throw Exception('Error registrando usuario: $e');
     }
   }
 
-  //Inicia sesión con correo electrónico y contraseña en Firebase y devuelve el usuario
-    Future<User?> signIn(String email, String password) async {
+  // Inicia sesión con correo electrónico y contraseña en Firebase y devuelve el usuario
+  Future<User?> signIn(String email, String password) async {
     try {
       UserCredential userCredential = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
       return userCredential.user;
     } on FirebaseAuthException catch (e) {
       // Manejo específico de excepciones de Firebase
-      if (e.code == 'user-not-found') {
-        throw Exception('No existe una cuenta con este correo electrónico.');
-      } else if (e.code == 'wrong-password') {
-        throw Exception('La contraseña es incorrecta.');
-      } else if (e.code == 'invalid-email') {
-        throw Exception('El correo electrónico no es válido.');
-      } else {
-        //EL usuario no está registrado ver
-        throw Exception('El usuario no está registrado: ${e.message}');
+      if (e.code == 'invalid-credential') {
+        throw ('Las credenciales son incorrectas.');
+      } else if (e.code == 'too-many-requests') {
+        throw ('Demasiados intentos de inicio de sesión fallidos. Intente más tarde.');
       }
     } catch (e) {
-      throw Exception('El usuario no está registrado: $e');
+      throw ('Las credenciales proporcionadas son incorrectas.');
     }
+    return null;
   }
 
-  //Cierra la sesión del usuario actual
+  // Cierra la sesión del usuario actual
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
   }
 
-  //Envía un correo electrónico de restablecimiento de contraseña a un usuario
- Future<void> sendPasswordResetEmail(String email) async {
+  // Envía un correo electrónico de restablecimiento de contraseña a un usuario
+  Future<void> sendPasswordResetEmail(String email) async {
     try {
-      await _firebaseAuth.sendPasswordResetEmail(email: email);
+      await _firebaseAuth.sendPasswordResetEmail(email:email);
     } on FirebaseAuthException catch (e) {
       // Manejo específico de excepciones de Firebase
-      if (e.code == 'user-not-found') {
-        throw Exception('No existe una cuenta con este correo electrónico.');
-      } else if (e.code == 'invalid-email') {
-        throw Exception('El correo electrónico no es válido.');
+      if (e.code == 'invalid-email') {
+        throw ('El correo electrónico no es válido.');
       } else {
-        throw Exception('Error enviando el correo de restablecimiento de contraseña: ${e.message}');
+        throw ('Error enviando el correo de restablecimiento de contraseña');
       }
     } catch (e) {
-      throw Exception('Error enviando el correo de restablecimiento de contraseña: $e');
+      throw ('Error enviando el correo de restablecimiento de contraseña');
     }
   }
 
   // Obtener el usuario actualmente autenticado
   User? getCurrentUser() {
     return _firebaseAuth.currentUser;
+  }
+
+  Future<User?> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      final UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
+      return userCredential.user;
+    } catch (e) {
+      throw ('Error al iniciar sesión con Google');
+    }
+  }
+
+  // Elimina el usuario autenticado actualmente
+  Future<void> deleteCurrentUser() async {
+    try {
+      await _firebaseAuth.currentUser!.delete();
+    } catch (e) {
+      throw ('Error al eliminar el usuario');
+    }
   }
 }

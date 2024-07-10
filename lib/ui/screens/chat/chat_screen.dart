@@ -52,10 +52,19 @@ class _ChatScreenState extends State<ChatScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        titleTextStyle: const TextStyle(
+          color: Colors.white,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'Georgia',
+          ),
+        automaticallyImplyLeading: false, 
         title: const Text('Chat'),
+        backgroundColor: const Color.fromARGB(255, 144, 184, 253),
         actions: [
           IconButton(
-            icon: Icon(Icons.delete),
+            color: Colors.white,
+            icon: const Icon(Icons.delete),
             onPressed: () async {
               await chatViewModel.clearMessages();
             },
@@ -84,29 +93,29 @@ class _ChatScreenState extends State<ChatScreen> {
                               padding: const EdgeInsets.symmetric(vertical: 8.0),
                               child: Text(
                                 dateLabel,
-                                style: TextStyle(color: Colors.grey),
+                                style: const TextStyle(color: Colors.blueGrey, fontFamily: "Times New Roman"),
                               ),
                             ),
                           ListTile(
                             leading: CircleAvatar(
                               backgroundImage: NetworkImage(message.userImage),
                             ),
-                            title: Text(message.username),
+                            title: Text(message.username, style: const TextStyle(color: Colors.black, fontFamily: "Inter", fontWeight: FontWeight.w200)),
                             subtitle: Container(
                               padding: const EdgeInsets.all(8.0),
                               decoration: BoxDecoration(
-                                color: Colors.grey[200],
+                                color: const Color.fromARGB(255, 217, 224, 237),
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(message.text),
+                                  Text(message.text, style: const TextStyle(color: Colors.black, fontFamily: "Inter", fontWeight: FontWeight.w500)),
                                   Align(
                                     alignment: Alignment.bottomRight,
                                     child: Text(
                                       formattedTime,
-                                      style: TextStyle(fontSize: 10, color: Colors.grey),
+                                      style: const TextStyle(color: Colors.black, fontFamily: "Inter", fontWeight: FontWeight.w500),
                                     ),
                                   ),
                                 ],
@@ -123,25 +132,50 @@ class _ChatScreenState extends State<ChatScreen> {
             child: Row(
               children: [
                 Expanded(
-                  child: TextField(
-                    controller: _messageController,
-                    focusNode: _focusNode,
-                    decoration: const InputDecoration(labelText: 'Escribe un mensaje'),
-                    onTap: () {
-                      _focusNode.requestFocus();
-                    },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 144, 184, 253),
+                      borderRadius: BorderRadius.circular(24.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: TextField(
+                        controller: _messageController,
+                        focusNode: _focusNode,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Escribe un mensaje',
+                          hintStyle: TextStyle(color: Colors.white, fontFamily: "Inter", fontSize: 14, fontWeight: FontWeight.w400),
+                        ),
+                        onTap: () {
+                          _focusNode.requestFocus();
+                        },
+                      ),
+                    ),
                   ),
                 ),
-                IconButton(
-                  icon: const Icon(Icons.send),
-                  onPressed: () async {
-                    if (_messageController.text.isNotEmpty) {
-                      await chatViewModel.sendMessage(_messageController.text);
-                      _messageController.clear();
-                      _focusNode.requestFocus();
-                      _scrollToBottom();
-                    }
-                  },
+                const SizedBox(width: 8.0),
+                CircleAvatar(
+                  backgroundColor: const Color.fromARGB(255, 144, 184, 253),
+                  child: IconButton(
+                    icon: const Icon(Icons.send, color: Colors.white),
+                    onPressed: () async {
+                      if (_messageController.text.isNotEmpty) {
+                        await chatViewModel.sendMessage(_messageController.text);
+                        _messageController.clear();
+                        _focusNode.requestFocus();
+                        _scrollToBottom();
+                      }
+                    },
+                  ),
                 ),
               ],
             ),

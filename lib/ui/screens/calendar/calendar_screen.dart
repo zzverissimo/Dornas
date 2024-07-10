@@ -37,8 +37,16 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 144, 184, 253),
+        titleTextStyle: const TextStyle(
+          color: Colors.white ,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'Georgia'
+          ),
         title: const Text('Calendario'),
         leading: IconButton(
+          color: Colors.white,
           icon: const Icon(Icons.list),
           onPressed: () {
             Navigator.push(
@@ -110,6 +118,24 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     return null;
                   },
                 ),
+                calendarStyle: const CalendarStyle(
+                // Cambia el estilo de los días seleccionados
+                selectedDecoration: BoxDecoration(
+                  color: Color.fromARGB(255, 144, 184, 253), // Cambia este color al que desees
+                  shape: BoxShape.circle,
+                ),
+                selectedTextStyle: TextStyle(
+                  color: Colors.white, // Color del texto del día seleccionado
+                ),
+                // Cambia el estilo de los días actuales
+                todayDecoration: BoxDecoration(
+                  color: Color.fromARGB(255, 182, 208, 254), // Cambia este color al que desees
+                  shape: BoxShape.circle,
+                ),
+                todayTextStyle: TextStyle(
+                  color: Colors.white, // Color del texto del día actual
+                ),
+              ),
               ),
               if (events.isEmpty)
                 const Center(child: Text('No hay eventos')),
@@ -156,7 +182,18 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       child: Card(
                         child: ListTile(
                           title: Text(event.title),
+                          titleTextStyle: const TextStyle(
+                            color: Color.fromARGB(255, 88, 123, 182),
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Inter'
+                          ),
                           subtitle: Text(
+                            style: const TextStyle(
+                              color: Colors.blueGrey,
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Inter'),
                             'Fecha: ${event.date.day}/${event.date.month}/${event.date.year}\nHora: ${event.date.hour}:${event.date.minute.toString().padLeft(2, '0')}\nMáximo de asistentes: ${event.maxAttendees}\nAsistentes actuales: ${event.attendees.length}',
                           ),
                           trailing: Row(
@@ -181,7 +218,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                     }
                                   }
                                 },
-                                child: Text(event.attendees.contains(authViewModel.currentUser?.id ?? '') ? 'Desanotarse' : 'Anotarse'),
+                                child: Text(event.attendees.contains(authViewModel.currentUser?.id ?? '') ? 'Desanotarse' : 'Anotarse', style: const TextStyle( fontFamily: 'Inter',fontWeight: FontWeight.bold,color: Color.fromARGB(255, 88, 123, 182))),
                               ),
                               IconButton(
                                 icon: const Icon(Icons.people),

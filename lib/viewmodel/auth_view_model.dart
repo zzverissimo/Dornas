@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dornas_app/model/user_model.dart';
 import 'package:dornas_app/services/auth_service.dart';
+import 'package:dornas_app/services/event_service.dart';
 import 'package:dornas_app/services/user_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -12,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthViewModel extends ChangeNotifier {
   final AuthenticationService _authService = AuthenticationService();
   final UserService _userService = UserService();
+  final EventService _eventService = EventService();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
@@ -69,7 +71,7 @@ class AuthViewModel extends ChangeNotifier {
       await _storage.ref('user_images/$userId.jpg').putFile(file);
       return await _storage.ref('user_images/$userId.jpg').getDownloadURL();
     } catch (e) {
-      throw Exception('Error uploading image: $e');
+      throw ('Error cargando imagen');
     }
   }
 
@@ -117,7 +119,7 @@ class AuthViewModel extends ChangeNotifier {
     setMessage(null);
     try {
       await _authService.sendPasswordResetEmail(email);
-      setMessage('Password reset link sent to your email.');
+      setMessage('Revise su correo para restablecer la contraseña.');
     } catch (e) {
       setMessage(e.toString());
     } finally {
@@ -188,5 +190,87 @@ class AuthViewModel extends ChangeNotifier {
       return _currentUser!.canCreateEvents ?? false;
     }
     return false;
+  }
+
+  Future<void> signInWithGoogle() async {
+    setLoading(true);
+    setMessage(null);
+    try {
+      User? user = await _authService.signInWithGoogle();
+      if (user != null) {
+        AppUser? appUser = await _userService.getUser(user.uid);
+        if (appUser == null) {
+          appUser = AppUser(id: user.uid, email: user.email!, displayName: user.displayName, photoUrl: user.photoURL);
+          await _userService.updateUser(appUser);
+        }
+        _currentUser = appUser;
+        await _saveUserSession(appUser);
+        _listenToUserChanges(user.uid);
+        notifyListeners();
+      } else {
+        setMessage('Error al iniciar sesión con Google.');
+      }
+    } catch (e) {
+      setMessage(e.toString());
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  Future<void> updateUserProfile(String? newName, String? newPhotoPath) async {
+    setLoading(true);
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        String? photoUrl;
+
+        if (newPhotoPath != null) {
+          photoUrl = await _uploadImage(newPhotoPath, user.uid);
+        }
+
+        final userData = {
+          'displayName': newName,
+          'photoUrl': photoUrl,
+        };
+
+        userData.removeWhere((key, value) => value == null);
+
+        await FirebaseFirestore.instance.collection('users').doc(user.uid).update(userData);
+
+        final updatedUser = AppUser(
+          id: user.uid,
+          email: user.email!,
+          displayName: newName ?? currentUser?.displayName,
+          photoUrl: photoUrl ?? currentUser?.photoUrl,
+        );
+
+        _currentUser = updatedUser;
+        await _saveUserSession(updatedUser);
+        notifyListeners();
+      }
+    } catch (e) {
+      setMessage(e.toString());
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  Future<void> deleteAccount() async {
+    setLoading(true);
+    setMessage(null);
+    try {
+      if (_currentUser != null) {
+        await _eventService.removeUserFromAllEvents(_currentUser!.id);
+        await _userService.deleteUser(_currentUser!.id);
+        await _authService.deleteCurrentUser();
+        _currentUser = null;
+        await _clearUserSession();
+        notifyListeners();
+      }
+    } catch (e) {
+      setMessage(e.toString());
+    } finally {
+      setLoading(false);
+    }
   }
 }

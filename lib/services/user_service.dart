@@ -12,7 +12,7 @@ class UserService {
       DocumentSnapshot snapshot = await _firestore.collection('users').doc(userId).get();
       return snapshot.exists;
     } catch (e) {
-      throw Exception('Error al comprobar si existe el usuario: $e');
+      throw ('Error al comprobar si existe el usuario');
     }
   }
 
@@ -24,7 +24,7 @@ class UserService {
         return AppUser.fromFirestore(snapshot.data() as Map<String, dynamic>);
       }
     } catch (e) {
-      throw Exception('Error al obtener datos del usuario: $e');
+      throw ('Error al obtener datos del usuario');
     }
     return null;
   }
@@ -42,7 +42,7 @@ class UserService {
         return (snapshot.data() as Map<String, dynamic>)['canCreateEvents'] as bool;
       }
     } catch (e) {
-      throw Exception('Error al verificar permisos del usuario: $e');
+      throw ('Error al verificar permisos del usuario');
     }
     return false;
   }
@@ -52,7 +52,17 @@ class UserService {
     try {
       return await _storage.ref('user_images/$userId.jpg').getDownloadURL();
     } catch (e) {
-      throw Exception('Error al obtener la URL de la imagen del usuario: $e');
+      throw ('Error al obtener la URL de la imagen del usuario');
+    }
+  }
+
+  // Elimina un usuario
+  Future<void> deleteUser(String userId) async {
+    try {
+      await _firestore.collection('users').doc(userId).delete();
+      await _storage.ref('user_images/$userId.jpg').delete();
+    } catch (e) {
+      throw ('Error al eliminar el usuario');
     }
   }
 }

@@ -96,44 +96,62 @@ class _MapScreenState extends State<MapScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text('Mapa'),
+        backgroundColor: const Color.fromARGB(255, 144, 184, 253),
+        titleTextStyle: const TextStyle(
+          color: Colors.white,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          fontFamily: "Georgia"
+        ),
         actions: [
-          DropdownButton<dynamic>(
-            value: mapViewModel.isOpenSeaMap ? 'openseamap' : mapViewModel.selectedMapType,
-            items: const [
-              DropdownMenuItem(
-                value: MapType.normal,
-                child: Text("Normal"),
+          Theme(
+            data: Theme.of(context).copyWith(
+              canvasColor: const Color.fromARGB(255, 144, 184, 253),
+            ),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<dynamic>(
+                value: mapViewModel.isOpenSeaMap ? 'openseamap' : mapViewModel.selectedMapType,
+                focusColor: const Color.fromARGB(255, 144, 184, 253),
+                dropdownColor: const Color.fromARGB(255, 144, 184, 253),
+                style: const TextStyle(color: Colors.white),
+                items: const [
+                  DropdownMenuItem(
+                    value: MapType.normal,
+                    child: Text("Normal", style: TextStyle(color: Colors.white)),
+                  ),
+                  DropdownMenuItem(
+                    value: MapType.satellite,
+                    child: Text("Satélite", style: TextStyle(color: Colors.white)),
+                  ),
+                  DropdownMenuItem(
+                    value: MapType.hybrid,
+                    child: Text("Híbrido", style: TextStyle(color: Colors.white)),
+                  ),
+                  DropdownMenuItem(
+                    value: MapType.terrain,
+                    child: Text("Orográfico", style: TextStyle(color: Colors.white)),
+                  ),
+                  DropdownMenuItem(
+                    value: 'openseamap',
+                    child: Text("OpenSeaMap", style: TextStyle(color: Colors.white)),
+                  ),
+                ],
+                onChanged: _onMapTypeChanged,
               ),
-              DropdownMenuItem(
-                value: MapType.satellite,
-                child: Text("Satélite"),
-              ),
-              DropdownMenuItem(
-                value: MapType.hybrid,
-                child: Text("Híbrido"),
-              ),
-              DropdownMenuItem(
-                value: MapType.terrain,
-                child: Text("Orográfico"),
-              ),
-              DropdownMenuItem(
-                value: 'openseamap',
-                child: Text("OpenSeaMap"),
-              ),
-            ],
-            onChanged: _onMapTypeChanged,
+            ),
           ),
           IconButton(
-            icon: const Icon(Icons.clear),
+            icon: const Icon(Icons.clear, color: Colors.white),
             onPressed: _clearRoutes,
           ),
           IconButton(
-            icon: const Icon(Icons.directions),
+            icon: const Icon(Icons.directions, color: Colors.white),
             onPressed: _addRoute,
           ),
           IconButton(
-            icon: const Icon(Icons.my_location),
+            icon: const Icon(Icons.my_location, color: Colors.white),
             onPressed: () {
               final mapViewModel = Provider.of<MapViewModel>(context, listen: false);
               if (mapViewModel.currentLocation != null) {

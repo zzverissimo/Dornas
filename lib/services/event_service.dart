@@ -24,4 +24,13 @@ class EventService {
   Future<void> deleteEvent(String eventId) async {
     await _firestore.collection('events').doc(eventId).delete();
   }
+
+  Future<void> removeUserFromAllEvents(String userId) async {
+    QuerySnapshot snapshot = await _firestore.collection('events').get();
+    for (var doc in snapshot.docs) {
+      Event event = Event.fromFirestore(doc.data() as Map<String, dynamic>);
+      event.attendees.remove(userId);
+      await updateEvent(event);
+    }
+  }
 }

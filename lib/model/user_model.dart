@@ -22,7 +22,7 @@ class AppUser {
       email: data['email'] as String,
       displayName: data['displayName'] as String?,
       photoUrl: data['photoUrl'] as String?,
-      canCreateEvents: data['canCreateEvents'] as bool,
+      canCreateEvents: data['canCreateEvents'] as bool?,
     );
   }
 

@@ -109,7 +109,50 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                             Navigator.pushNamed(context, '/register');
                           },
                           onForgotPassPressed: () {
-                            // Lógica para olvidé mi contraseña
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                final TextEditingController resetEmailController = TextEditingController();
+                                return AlertDialog(
+                                  title: const Text("Recuperar contraseña"),
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      TextField(
+                                        controller: resetEmailController,
+                                        decoration: const InputDecoration(labelText: "Correo electrónico"),
+                                      ),
+                                    ],
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () async {
+                                        await authViewModel.resetPassword(resetEmailController.text);
+                                        if (context.mounted) {
+                                          Navigator.of(context).pop();
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(content: Text(authViewModel.errorMessage ?? 'Revise su correo para restablecer la contraseña.')),
+                                          );
+                                        }
+                                      },
+                                      child: const Text("Enviar"),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },   
+                          onGoogleSignInPressed: () async {
+                            await authViewModel.signInWithGoogle();
+                            if (context.mounted) {
+                              if (authViewModel.currentUser != null) {
+                                Navigator.pushReplacementNamed(context, '/main');
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(authViewModel.errorMessage ?? 'Error al iniciar sesión con Google')),
+                                );
+                              }
+                            }
                           },
                         ),
                     ],

@@ -12,10 +12,16 @@ class HomeScreen extends StatelessWidget {
     final HomeViewModel viewModel = HomeViewModel();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Menú Principal'),
+        title: const Text('Dornas App'),
         centerTitle: true,
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.blueGrey,
+        backgroundColor: const Color.fromARGB(255, 144, 184, 253),
+        titleTextStyle: const TextStyle(
+          color: Colors.white,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'Georgia'
+        ),
       ),
       body: Center(
         child: Column(
@@ -28,6 +34,7 @@ class HomeScreen extends StatelessWidget {
               foregroundColor: Colors.white,
               width: MediaQuery.of(context).size.width * 0.9,
               borderRadius: 8,
+              fontFamily: 'Inter',
             ),
             const SizedBox(height: 16),
             CustomButton(
@@ -39,6 +46,7 @@ class HomeScreen extends StatelessWidget {
               foregroundColor: Colors.white,
               width: MediaQuery.of(context).size.width * 0.9,
               borderRadius: 8,
+              fontFamily: 'Inter',
             ),
             const SizedBox(height: 16),
             CustomButton(
@@ -48,6 +56,7 @@ class HomeScreen extends StatelessWidget {
               foregroundColor: Colors.white,
               width: MediaQuery.of(context).size.width * 0.9,
               borderRadius: 8,
+              fontFamily: 'Inter',
             ),
             const SizedBox(height: 16),
             CustomButton(
@@ -57,6 +66,7 @@ class HomeScreen extends StatelessWidget {
               foregroundColor: Colors.white,
               width: MediaQuery.of(context).size.width * 0.9,
               borderRadius: 8,
+              fontFamily: 'Inter',
             ),
             const SizedBox(height: 16),
             CustomButton(
@@ -66,6 +76,7 @@ class HomeScreen extends StatelessWidget {
               foregroundColor: Colors.white,
               width: MediaQuery.of(context).size.width * 0.9,
               borderRadius: 8,
+              fontFamily: 'Inter',
             ),
             const SizedBox(height: 16),
             CustomButton(
@@ -75,6 +86,7 @@ class HomeScreen extends StatelessWidget {
               foregroundColor: Colors.white,
               width: MediaQuery.of(context).size.width * 0.9,
               borderRadius: 8,
+              fontFamily: 'Inter',
             ),
           ],
         ),

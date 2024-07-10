@@ -18,7 +18,7 @@ class MapService {
         'location': GeoPoint(position.latitude, position.longitude),
       });
     } catch (e) {
-      throw Exception('Error al actualizar la ubicación del usuario: $e');
+      throw ('Error al actualizar la ubicación del usuario');
     }
   }
 }

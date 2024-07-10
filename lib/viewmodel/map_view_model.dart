@@ -214,7 +214,7 @@ class MapViewModel extends ChangeNotifier {
     if (response.statusCode == 200) {
       return response.bodyBytes;
     } else {
-      throw Exception('Error al descargar la imagen');
+      throw ('Error al descargar la imagen');
     }
   }
 

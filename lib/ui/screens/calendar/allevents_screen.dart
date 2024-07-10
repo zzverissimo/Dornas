@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AllEventsScreen extends StatelessWidget {
-  const AllEventsScreen({Key? key}) : super(key: key);
+  const AllEventsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +12,13 @@ class AllEventsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Todos los Eventos'),
+        title: const Text('Eventos'),
+        centerTitle: true,
+        titleTextStyle: const TextStyle(
+          color: Colors.black,
+          fontSize: 18,
+          fontFamily: 'Inter',
+        )
       ),
       body: StreamBuilder<List<Event>>(
         stream: eventViewModel.getEventsStream(),
@@ -33,8 +39,19 @@ class AllEventsScreen extends StatelessWidget {
               final event = events[index];
               return Card(
                 child: ListTile(
+                  titleTextStyle: const TextStyle(
+                            color: Color.fromARGB(255, 88, 123, 182),
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Inter'
+                          ),
                   title: Text(event.title),
                   subtitle: Text(
+                      style: const TextStyle(
+                              color: Colors.blueGrey,
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Inter'),
                     'Fecha: ${event.date.day}/${event.date.month}/${event.date.year}\nHora: ${event.date.hour}:${event.date.minute.toString().padLeft(2, '0')}\nMáximo de asistentes: ${event.maxAttendees}\nAsistentes actuales: ${event.attendees.length}',
                   ),
                 ),

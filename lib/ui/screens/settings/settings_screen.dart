@@ -1,9 +1,10 @@
+import 'package:dornas_app/ui/screens/settings/editProfile_screen.dart';
 import 'package:dornas_app/ui/screens/settings/widgets/settings_buttons.dart';
 import 'package:dornas_app/ui/screens/settings/widgets/settings_header.dart';
 import 'package:dornas_app/ui/screens/settings/widgets/settings_options.dart';
 import 'package:dornas_app/ui/screens/settings/widgets/settings_title.dart';
 import 'package:dornas_app/ui/widgets/custom_text.dart';
-import 'package:dornas_app/viewmodel/auth_view_model.dart';
+import 'package:dornas_app/viewmodel/settings_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,13 +15,11 @@ class SettingsScreen extends StatefulWidget {
   State<SettingsScreen> createState() => _SettingsScreenWidgetState();
 }
 
-class _SettingsScreenWidgetState extends State<SettingsScreen>
-    with TickerProviderStateMixin {
-
+class _SettingsScreenWidgetState extends State<SettingsScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    final authViewModel = Provider.of<AuthViewModel>(context);
-    final user = authViewModel.currentUser;
+    final settingsViewModel = Provider.of<SettingsViewModel>(context);
+    final user = settingsViewModel.currentUser;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -51,53 +50,38 @@ class _SettingsScreenWidgetState extends State<SettingsScreen>
                 ),
               ),
             ],
-            const SettingsSectionTitle(title: 'Your Account'),
+            const SettingsSectionTitle(title: 'Tu cuenta'),
             SettingsOption(
               icon: Icons.account_circle_outlined,
-              text: 'Edit Profile',
+              text: 'Editar Perfil',
               onTap: () {
-                // Acción para editar perfil
+                Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => EditProfileScreen()),
+    );
               },
             ),
-            SettingsOption(
-              icon: Icons.notifications_none,
-              text: 'Notification Settings',
-              onTap: () {
-                // Acción para configuración de notificaciones
-              },
-            ),
-            const SettingsSectionTitle(title: 'App Settings'),
+            const SettingsSectionTitle(title: 'Ajustes'),
             SettingsOption(
               icon: Icons.help_outline_rounded,
-              text: 'Support',
+              text: 'Soporte',
               onTap: () {
                 // Acción para soporte
               },
             ),
             SettingsOption(
               icon: Icons.privacy_tip_rounded,
-              text: 'Terms of Service',
+              text: 'Términos de Servicio',
               onTap: () {
                 // Acción para términos de servicio
               },
             ),
-            if (authViewModel.isLoading)
-              const Center(child: CircularProgressIndicator()),
-            if (!authViewModel.isLoading)
-              SettingsLogoutButton(
-                onPressed: () async {
-                  await authViewModel.signOut();
-                  if (context.mounted) {
-                    if (authViewModel.errorMessage == null) {
-                      Navigator.pushReplacementNamed(context, '/start');
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(authViewModel.errorMessage ?? 'Error al cerrar sesión')),
-                      );
-                    }
-                  }
-                },
-              ),
+            SettingsLogoutButton(
+                onPressed: () => settingsViewModel.signOut(context),
+            ),
+            SettingsDeleteAccountButton(
+                onPressed: () => settingsViewModel.deleteAccount(context),
+            ),
           ],
         ),
       ),

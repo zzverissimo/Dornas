@@ -20,18 +20,6 @@ String? passwordValidator(String? value) {
   if (value.trim().length < 6) {
     return 'La contraseña debe tener al menos 6 caracteres';
   }
-  bool hasNumber = value.contains(RegExp(r'\d'));
-  bool hasUpperCase = value.contains(RegExp(r'[A-Z]'));
-  bool hasSymbol = value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
-  if (!hasUpperCase) {
-    return 'La contraseña debe contener una letra mayúscula';
-  }
-  if (!hasNumber) {
-    return 'La contraseña debe contener un número';
-  }
-  if (!hasSymbol) {
-    return 'La contraseña debe contener un símbolo';
-  }
   return null;
 }
 

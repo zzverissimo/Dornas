@@ -53,36 +53,43 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
               HomeScreen(),
               MapScreen(),
               CalendarScreen(),
-              SettingsScreen(),
               ChatScreen(),
+              SettingsScreen(),
+            
             ],
           ),
           bottomNavigationBar: BottomNavigationBar(
+            selectedLabelStyle: const TextStyle(
+              fontFamily: 'Georgia',
+            ),
+            unselectedLabelStyle: const TextStyle(
+              fontFamily: 'Georgia',
+            ),
             currentIndex: currentPage,
             onTap: changePage,
             type: BottomNavigationBarType.fixed,
-            selectedItemColor: Colors.blue,
+            selectedItemColor:  const Color.fromARGB(255, 144, 184, 253),
             unselectedItemColor: Colors.black,
             items: const [
               BottomNavigationBarItem(
                 icon: Icon(Icons.home),
-                label: 'Home',
+                label: 'Menú',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.map),
-                label: 'Map',
+                label: 'Mapa',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.calendar_today),
-                label: 'Calendar',
+                label: 'Calendario',
+              ),
+               BottomNavigationBarItem(
+                icon: Icon(Icons.chat),
+                label: 'Chat',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.settings),
-                label: 'Settings',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.chat),
-                label: 'Chat',
+                label: 'Ajustes',
               ),
             ],
           ),

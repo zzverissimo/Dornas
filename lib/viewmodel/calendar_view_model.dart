@@ -73,4 +73,14 @@ class CalendarViewModel extends ChangeNotifier {
       setMessage(e.toString());
     }
   }
+
+  Future<void> removeUserFromAllEvents(String userId) async {
+    try {
+      await _eventService.removeUserFromAllEvents(userId);
+      _events = await _eventService.getEvents();
+      notifyListeners();
+    } catch (e) {
+      setMessage(e.toString());
+    }
+  }
 }
