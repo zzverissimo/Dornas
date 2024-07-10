@@ -18,7 +18,6 @@ class MapViewModel extends ChangeNotifier {
   final MapService _mapService = MapService();
   final UserService _userService = UserService();
   final DefaultCacheManager _cacheManager = DefaultCacheManager();
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   LatLng? _currentLocation;
   LatLng? get currentLocation => _currentLocation;
