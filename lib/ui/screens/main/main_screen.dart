@@ -5,6 +5,7 @@ import 'package:dornas_app/ui/screens/map/map_screen.dart';
 import 'package:dornas_app/ui/screens/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
 
+// Pantalla principal de la aplicación para navegar entre las diferentes pantallas
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 

@@ -1,7 +1,7 @@
 import 'package:dornas_app/ui/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
-
+// Botones de inicio
 class StartButtons extends StatelessWidget {
   final VoidCallback onSignInPressed;
   final VoidCallback onRegisterPressed;

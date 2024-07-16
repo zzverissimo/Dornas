@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+// Proveedor de teselas personalizado
 class CustomUrlTileProvider extends TileProvider {
   final String urlTemplate;
 
@@ -17,7 +18,6 @@ class CustomUrlTileProvider extends TileProvider {
       final bytes = response.buffer.asUint8List();
       return Tile(256, 256, bytes);
     } catch (e) {
-      print('Error fetching tile: $e');
       return const Tile(256, 256, null);
     }
   }

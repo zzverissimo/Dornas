@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Botón personalizado
 class CustomButton extends StatelessWidget {
   const CustomButton({
     required this.text,

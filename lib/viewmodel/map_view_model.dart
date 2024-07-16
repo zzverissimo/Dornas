@@ -14,6 +14,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 
+// ViewModel para el mapa
 class MapViewModel extends ChangeNotifier {
   final MapService _mapService = MapService();
   final UserService _userService = UserService();
@@ -59,6 +60,7 @@ class MapViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Cambia el tipo de mapa
   void setMapType(dynamic mapType) {
     if (mapType == 'openseamap') {
       _selectedMapType = 'openseamap';
@@ -84,6 +86,7 @@ class MapViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Inicia la transmisión de ubicación
   void startLocationUpdates() {
   _positionStreamSubscription = _mapService.getCurrentLocationStream().listen(
     (Position position) async {
@@ -122,12 +125,13 @@ class MapViewModel extends ChangeNotifier {
   );
 }
 
-
+  // Detiene la transmisión de ubicación
   void stopLocationUpdates() {
     _positionStreamSubscription?.cancel();
     _usersStreamSubscription?.cancel();
   }
 
+  // Añade una polilínea
   void addPolyline(List<LatLng> points) {
     final polyline = Polyline(
       polylineId: PolylineId(DateTime.now().toIso8601String()),
@@ -139,11 +143,13 @@ class MapViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Limpia las polilíneas
   void clearPolylines() {
     _polylines.clear();
     notifyListeners();
   }
 
+  // Añade un la foto de perfil del usuario correspondiente a su localización
  Future<void> _addCurrentUserMarker() async {
     if (_currentLocation != null) {
       final userId = FirebaseAuth.instance.currentUser?.uid;
@@ -181,7 +187,7 @@ class MapViewModel extends ChangeNotifier {
     }
   }
 
-
+  // Añade un marcador de usuario
   Future<void> _addUserMarker(String userId, LatLng position, String displayName, String photoUrl) async {
     Uint8List bytes;
     try {
@@ -207,7 +213,7 @@ class MapViewModel extends ChangeNotifier {
     _markers.add(marker);
   }
 
-
+  // Descarga la imagen
   Future<Uint8List> _downloadImageBytes(String url) async {
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
@@ -217,13 +223,15 @@ class MapViewModel extends ChangeNotifier {
     }
   }
 
+  // Convierte los bytes en un BitmapDescriptor
   Future<BitmapDescriptor> _getBytesAsBitmapDescriptor(Uint8List bytes) async {
     final codec = await instantiateImageCodec(bytes, targetWidth: 100);
     final frame = await codec.getNextFrame();
     final data = await frame.image.toByteData(format: ImageByteFormat.png);
-    return BitmapDescriptor.fromBytes(data!.buffer.asUint8List());
+    return BitmapDescriptor.bytes(data!.buffer.asUint8List());
   }
 
+  // Convierte la imagen en un círculo
   Future<Uint8List> getCircleImage(Uint8List imageBytes) async {
     final codec = await instantiateImageCodec(imageBytes);
     final frame = await codec.getNextFrame();

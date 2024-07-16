@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
 
+// Punto de entrada de la aplicación
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -22,11 +23,6 @@ void main() async {
     isLoggedIn = false;
   } 
 
-  print('isLoggedIn: $isLoggedIn');
-  print('User: ${user?.email}');
-  print('User: ${user?.canCreateEvents}');
-
-
   runApp(   
     MultiProvider(
       providers: appProviders,
@@ -35,6 +31,7 @@ void main() async {
   );
 }
 
+// Clase principal de la aplicación
 class DornasApp extends StatelessWidget {
   const DornasApp({super.key, required this.isLoggedIn});
 

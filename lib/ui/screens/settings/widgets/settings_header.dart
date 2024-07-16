@@ -1,6 +1,7 @@
 import 'package:dornas_app/ui/widgets/custom_container.dart';
 import 'package:flutter/material.dart';
 
+// Encabezado de la pantalla de ajustes
 class SettingsHeader extends StatelessWidget {
   final String? photoUrl;
 

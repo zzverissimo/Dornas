@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Clip de imagen personalizado
 class CustomClip extends StatelessWidget {
   const CustomClip({
     required this.borderRadius,

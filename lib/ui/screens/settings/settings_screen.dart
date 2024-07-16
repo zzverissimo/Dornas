@@ -4,10 +4,12 @@ import 'package:dornas_app/ui/screens/settings/widgets/settings_header.dart';
 import 'package:dornas_app/ui/screens/settings/widgets/settings_options.dart';
 import 'package:dornas_app/ui/screens/settings/widgets/settings_title.dart';
 import 'package:dornas_app/ui/widgets/custom_text.dart';
+import 'package:dornas_app/viewmodel/home_view_model.dart';
 import 'package:dornas_app/viewmodel/settings_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+// Pantalla de ajustes
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
@@ -15,11 +17,13 @@ class SettingsScreen extends StatefulWidget {
   State<SettingsScreen> createState() => _SettingsScreenWidgetState();
 }
 
-class _SettingsScreenWidgetState extends State<SettingsScreen> with TickerProviderStateMixin {
+class _SettingsScreenWidgetState extends State<SettingsScreen>
+    with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final settingsViewModel = Provider.of<SettingsViewModel>(context);
     final user = settingsViewModel.currentUser;
+    final HomeViewModel viewModel = HomeViewModel();
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -56,9 +60,10 @@ class _SettingsScreenWidgetState extends State<SettingsScreen> with TickerProvid
               text: 'Editar Perfil',
               onTap: () {
                 Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => EditProfileScreen()),
-    );
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const EditProfileScreen()),
+                );
               },
             ),
             const SettingsSectionTitle(title: 'Ajustes'),
@@ -66,21 +71,21 @@ class _SettingsScreenWidgetState extends State<SettingsScreen> with TickerProvid
               icon: Icons.help_outline_rounded,
               text: 'Soporte',
               onTap: () {
-                // Acción para soporte
+                  viewModel.openURL('https://dornas.es/pdf/soporte_dornas.pdf');
               },
             ),
             SettingsOption(
               icon: Icons.privacy_tip_rounded,
               text: 'Términos de Servicio',
               onTap: () {
-                // Acción para términos de servicio
+                  viewModel.openURL('https://dornas.es/pdf/terminos_dornas.pdf');
               },
             ),
             SettingsLogoutButton(
-                onPressed: () => settingsViewModel.signOut(context),
+              onPressed: () => settingsViewModel.signOut(context),
             ),
             SettingsDeleteAccountButton(
-                onPressed: () => settingsViewModel.deleteAccount(context),
+              onPressed: () => settingsViewModel.deleteAccount(context),
             ),
           ],
         ),

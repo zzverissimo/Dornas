@@ -2,6 +2,7 @@ import 'package:dornas_app/ui/widgets/custom_clipimage.dart';
 import 'package:dornas_app/ui/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 
+// Vista de página de artículo
 class ItemPageView extends StatelessWidget {
   const ItemPageView({
     required this.imagePath,

@@ -2,6 +2,7 @@ import 'package:dornas_app/ui/screens/startscreen/widgets/item_pageview.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart' as smooth_page_indicator;
 
+// Vista de página de widgets
 class WidgetPageView extends StatelessWidget {
   final PageController controller;
 

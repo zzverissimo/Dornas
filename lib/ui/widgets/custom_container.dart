@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Contenedor personalizado
 class CustomContainer extends StatelessWidget {
   const CustomContainer({
     required this.width, 

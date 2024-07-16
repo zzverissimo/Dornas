@@ -3,6 +3,7 @@ import 'package:dornas_app/viewmodel/calendar_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+// Pantalla para crear un evento
 class CreateEventScreen extends StatelessWidget {
   final DateTime? selectedDay;
   CreateEventScreen({super.key, this.selectedDay});
@@ -51,7 +52,9 @@ class CreateEventScreen extends StatelessWidget {
                     attendees: [],
                   );
                   await calendarViewModel.addEvent(event);
+                  if (context.mounted){
                   Navigator.pop(context);
+                  }
                 }
               },
               child: const Text('Crear Evento'),

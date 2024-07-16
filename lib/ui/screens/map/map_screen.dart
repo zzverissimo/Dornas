@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
+// Pantalla de mapa
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
 
@@ -25,6 +26,7 @@ class _MapScreenState extends State<MapScreen> {
     _requestLocationPermission();
   }
 
+  // Solicita permiso de ubicación
   Future<void> _requestLocationPermission() async {
     var status = await Permission.location.request();
     if (status.isGranted) {
@@ -36,13 +38,16 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
+  // Actualiza la ubicación en el mapa
   void _updateLocation() {
     final mapViewModel = Provider.of<MapViewModel>(context, listen: false);
     if (_controller != null && mapViewModel.currentLocation != null && _shouldUpdateLocation) {
       // No actualizar la cámara automáticamente
+      // Lo dejo así para el futuro
     }
   }
 
+  // Callback cuando el mapa se ha creado
   void _onMapCreated(GoogleMapController controller) {
     _controller = controller;
     _updateLocation();
@@ -57,12 +62,14 @@ class _MapScreenState extends State<MapScreen> {
     super.dispose();
   }
 
+  // Mueve la cámara a una ubicación
   void _moveCameraToLocation(LatLng location) {
     _controller?.animateCamera(
       CameraUpdate.newLatLngZoom(location, 14.0),
     );
   }
 
+// Agrega una linea
   void _addRoute() {
     final mapViewModel = Provider.of<MapViewModel>(context, listen: false);
     if (_startPosition != null && _endPosition != null) {
@@ -70,6 +77,7 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
+ // Elimina las lineas
   void _clearRoutes() {
     final mapViewModel = Provider.of<MapViewModel>(context, listen: false);
     mapViewModel.clearPolylines();
@@ -79,6 +87,7 @@ class _MapScreenState extends State<MapScreen> {
     });
   }
 
+ // Cambia el tipo de mapa
   void _onMapTypeChanged(dynamic value) {
     final mapViewModel = Provider.of<MapViewModel>(context, listen: false);
     setState(() {

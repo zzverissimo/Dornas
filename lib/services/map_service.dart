@@ -4,6 +4,7 @@ import 'package:geolocator/geolocator.dart';
 class MapService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  // Obtiene una transmisión de la ubicación actual del usuario
   Stream<Position> getCurrentLocationStream() {
     LocationSettings locationSettings = const LocationSettings(
       accuracy: LocationAccuracy.bestForNavigation,
@@ -12,6 +13,7 @@ class MapService {
     return Geolocator.getPositionStream(locationSettings: locationSettings);
   }
 
+  // Obtiene la ubicación de un usuario por su identificador
   Future<void> updateUserLocation(String userId, Position position) async {
     try {
       await _firestore.collection('users').doc(userId).update({

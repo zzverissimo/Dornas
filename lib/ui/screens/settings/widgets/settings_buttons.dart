@@ -1,6 +1,7 @@
 import 'package:dornas_app/ui/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
+// Botones de ajustes
 class SettingsLogoutButton extends StatelessWidget {
   final VoidCallback onPressed;
 

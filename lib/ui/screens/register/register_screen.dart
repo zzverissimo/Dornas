@@ -11,7 +11,7 @@ import 'package:dornas_app/viewmodel/auth_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
+// Pantalla de registro
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 

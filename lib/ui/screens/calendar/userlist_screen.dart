@@ -3,6 +3,7 @@ import 'package:dornas_app/model/user_model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
+// Muestra la lista de usuarios anotados en un evento
 class UserListScreen extends StatelessWidget {
   final String eventId;
   const UserListScreen({super.key, required this.eventId});

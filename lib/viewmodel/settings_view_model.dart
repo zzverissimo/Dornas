@@ -2,6 +2,7 @@ import 'package:dornas_app/model/user_model.dart';
 import 'package:dornas_app/viewmodel/auth_view_model.dart';
 import 'package:flutter/material.dart';
 
+// ViewModel para la pantalla de ajustes
 class SettingsViewModel extends ChangeNotifier {
   final AuthViewModel authViewModel;
 
@@ -26,11 +27,13 @@ class SettingsViewModel extends ChangeNotifier {
     }
   }
 
+  // Actualiza el perfil del usuario
   Future<void> updateUserProfile(String? newName, String? newPhotoPath) async {
     await authViewModel.updateUserProfile(newName, newPhotoPath);
     notifyListeners();
   }
 
+  // Elimina la cuenta del usuario
   Future<void> deleteAccount(BuildContext context) async {
     bool confirm = await showDialog(
       context: context,

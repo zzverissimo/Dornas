@@ -2,6 +2,7 @@ import 'package:dornas_app/model/event_model.dart';
 import 'package:dornas_app/services/event_service.dart';
 import 'package:flutter/material.dart';
 
+// ViewModel para el calendario
 class CalendarViewModel extends ChangeNotifier {
   final EventService _eventService = EventService();
 
@@ -24,6 +25,7 @@ class CalendarViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Obtiene una lista de eventos
   Future<void> fetchEvents() async {
     try {
       _events = await _eventService.getEvents();
@@ -33,6 +35,7 @@ class CalendarViewModel extends ChangeNotifier {
     }
   }
 
+  // Obtiene una transmisión de eventos
   Stream<List<Event>> getEventsStream() {
     return _eventService.getEventsStream().map((snapshot) {
       return snapshot.docs.map((doc) {
@@ -41,6 +44,7 @@ class CalendarViewModel extends ChangeNotifier {
     });
   }
 
+  // Añade un evento
   Future<void> addEvent(Event event) async {
     try {
       await _eventService.addEvent(event);
@@ -51,6 +55,7 @@ class CalendarViewModel extends ChangeNotifier {
     }
   }
 
+  // Actualiza un evento
   Future<void> updateEvent(Event event) async {
     try {
       await _eventService.updateEvent(event);
@@ -64,6 +69,7 @@ class CalendarViewModel extends ChangeNotifier {
     }
   }
 
+  // Elimina un evento
   Future<void> deleteEvent(String eventId) async {
     try {
       await _eventService.deleteEvent(eventId);
@@ -74,6 +80,7 @@ class CalendarViewModel extends ChangeNotifier {
     }
   }
 
+  // Elimina un usuario de todos los eventos
   Future<void> removeUserFromAllEvents(String userId) async {
     try {
       await _eventService.removeUserFromAllEvents(userId);

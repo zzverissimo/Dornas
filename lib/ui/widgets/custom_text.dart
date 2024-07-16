@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+// Texto personalizado
 class CustomText extends StatelessWidget {
   const CustomText({
     required this.fontFamily,

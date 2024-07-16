@@ -7,7 +7,8 @@ class AuthenticationService {
   // Crea un usuario con correo electrónico y contraseña en Firebase y lo devuelve
   Future<User?> signUp(String email, String password) async {
     try {
-      UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential = await _firebaseAuth
+          .createUserWithEmailAndPassword(email: email, password: password);
       return userCredential.user;
     } on FirebaseAuthException catch (e) {
       // Manejo específico de excepciones de Firebase
@@ -28,7 +29,8 @@ class AuthenticationService {
   // Inicia sesión con correo electrónico y contraseña en Firebase y devuelve el usuario
   Future<User?> signIn(String email, String password) async {
     try {
-      UserCredential userCredential = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential = await _firebaseAuth
+          .signInWithEmailAndPassword(email: email, password: password);
       return userCredential.user;
     } on FirebaseAuthException catch (e) {
       // Manejo específico de excepciones de Firebase
@@ -51,7 +53,7 @@ class AuthenticationService {
   // Envía un correo electrónico de restablecimiento de contraseña a un usuario
   Future<void> sendPasswordResetEmail(String email) async {
     try {
-      await _firebaseAuth.sendPasswordResetEmail(email:email);
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {
       // Manejo específico de excepciones de Firebase
       if (e.code == 'invalid-email') {
@@ -69,15 +71,18 @@ class AuthenticationService {
     return _firebaseAuth.currentUser;
   }
 
+  // Inicia sesión con Google y devuelve el usuario
   Future<User?> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser!.authentication;
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-      final UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
+      final UserCredential userCredential =
+          await _firebaseAuth.signInWithCredential(credential);
       return userCredential.user;
     } catch (e) {
       throw ('Error al iniciar sesión con Google');

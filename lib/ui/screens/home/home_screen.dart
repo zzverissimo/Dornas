@@ -2,7 +2,7 @@ import 'package:dornas_app/ui/widgets/custom_button.dart';
 import 'package:dornas_app/viewmodel/home_view_model.dart';
 import 'package:flutter/material.dart';
 
-
+// Pantalla de inicio
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -29,7 +29,9 @@ class HomeScreen extends StatelessWidget {
           children: [
             CustomButton(
               text: 'Historia',
-              onPressed: () {},
+              onPressed: () {
+                  viewModel.openURL('https://dornas.es/pdf/historia_dornas.pdf');
+              },
               backgroundColor: Colors.black,
               foregroundColor: Colors.white,
               width: MediaQuery.of(context).size.width * 0.9,
@@ -51,7 +53,9 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 16),
             CustomButton(
               text: 'Embarcaciones',
-              onPressed: () {},
+              onPressed: () {
+                  viewModel.openURL('https://dornas.es/pdf/embarcaciones_dornas.pdf');
+              },
               backgroundColor: Colors.black,
               foregroundColor: Colors.white,
               width: MediaQuery.of(context).size.width * 0.9,
@@ -61,7 +65,9 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 16),
             CustomButton(
               text: 'Carpintería de ribera',
-              onPressed: () {},
+              onPressed: () {
+                  viewModel.openURL('https://dornas.es/pdf/guia_dornas.pdf');
+              },
               backgroundColor: Colors.black,
               foregroundColor: Colors.white,
               width: MediaQuery.of(context).size.width * 0.9,
@@ -71,7 +77,9 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 16),
             CustomButton(
               text: 'Actividades',
-              onPressed: () {},
+              onPressed: () {
+                  viewModel.openURL('https://dornas.es/pdf/actividades_dornas.pdf');
+              },
               backgroundColor: Colors.black,
               foregroundColor: Colors.white,
               width: MediaQuery.of(context).size.width * 0.9,
@@ -81,7 +89,9 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 16),
             CustomButton(
               text: 'Enlaces de interés',
-              onPressed: () {},
+              onPressed: () {
+                  viewModel.openURL('https://dornas.es/pdf/enlaces_dornas.pdf');
+              },
               backgroundColor: Colors.black,
               foregroundColor: Colors.white,
               width: MediaQuery.of(context).size.width * 0.9,

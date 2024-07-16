@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+// Pantalla de chat
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
 
   @override
-  _ChatScreenState createState() => _ChatScreenState();
+  State<ChatScreen> createState() {
+    return _ChatScreenState();
+  }
 }
 
 class _ChatScreenState extends State<ChatScreen> {
@@ -15,6 +18,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final FocusNode _focusNode = FocusNode();
   final ScrollController _scrollController = ScrollController();
 
+ // Inicializa el estado del widget
   @override
   void initState() {
     super.initState();
@@ -24,6 +28,7 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
+// Libera los recursos del widget
   @override
   void dispose() {
     _messageController.dispose();
@@ -32,6 +37,7 @@ class _ChatScreenState extends State<ChatScreen> {
     super.dispose();
   }
 
+// Desplaza la lista de mensajes al final
   void _scrollToBottom() {
     _scrollController.animateTo(
       _scrollController.position.maxScrollExtent,
@@ -43,7 +49,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     final chatViewModel = Provider.of<ChatViewModel>(context);
-
+    
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
         _scrollToBottom();

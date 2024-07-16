@@ -1,3 +1,4 @@
+// Contiene funciones que se utilizan para validar los campos de los formularios
 String? emailValidator(String? value) {
   if (value == null || value.trim().isEmpty) {
     return 'Introduce tu email, el campo está vacío';
@@ -13,6 +14,7 @@ String? emailValidator(String? value) {
   return null;
 }
 
+// Función para validar la contraseña
 String? passwordValidator(String? value) {
   if (value == null || value.trim().isEmpty) {
     return 'Introduce tu contraseña, el campo está vacío';
@@ -23,6 +25,7 @@ String? passwordValidator(String? value) {
   return null;
 }
 
+// Función para validar el nombre
 String? nameValidator(String? value) {
   if (value == null || value.trim().isEmpty) {
     return 'Introduce tu nombre';
@@ -36,6 +39,7 @@ String? nameValidator(String? value) {
   return null;
 }
 
+// Función para validar la confirmación de la contraseña
 String? confirmPasswordValidator(String? value, String password) {
   if (value == null || value.trim().isEmpty) {
     return 'Introduce tu contraseña, el campo está vacío';

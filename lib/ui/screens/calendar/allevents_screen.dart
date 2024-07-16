@@ -3,6 +3,7 @@ import 'package:dornas_app/viewmodel/calendar_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+// Pantalla que muestra todos los eventos
 class AllEventsScreen extends StatelessWidget {
   const AllEventsScreen({super.key});
 

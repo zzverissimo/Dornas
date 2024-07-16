@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+// Botones de inicio de sesión
 class LoginButtons extends StatelessWidget {
   final VoidCallback onSignInPressed;
   final VoidCallback onRegisterPressed;

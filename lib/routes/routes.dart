@@ -10,6 +10,7 @@ import 'package:dornas_app/ui/screens/settings/settings_screen.dart';
 import 'package:dornas_app/ui/screens/startscreen/start_screen.dart';
 import 'package:flutter/material.dart';
 
+// Define las rutas de la aplicación
 final Map<String, WidgetBuilder> appRoutes = {
   '/start': (context) => const StartScreen(),
   '/login': (context) => const LoginScreen(),

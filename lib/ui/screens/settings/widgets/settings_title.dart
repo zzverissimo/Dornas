@@ -1,6 +1,7 @@
 import 'package:dornas_app/ui/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 
+// Título de sección de ajustes
 class SettingsSectionTitle extends StatelessWidget {
   final String title;
 

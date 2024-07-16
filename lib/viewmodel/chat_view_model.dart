@@ -3,6 +3,7 @@ import 'package:dornas_app/model/message_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+// ViewModel para el chat
 class ChatViewModel extends ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   List<Message> _messages = [];
@@ -14,6 +15,7 @@ class ChatViewModel extends ChangeNotifier {
     fetchMessages();
   }
 
+  // Obtiene una transmisión de mensajes ordenados por fecha de creación
   void fetchMessages() async {
     _isLoading = true;
     notifyListeners();
@@ -28,6 +30,7 @@ class ChatViewModel extends ChangeNotifier {
     });
   }
 
+  // Envía un mensaje a Firestore
   Future<void> sendMessage(String text) async {
     final user = FirebaseAuth.instance.currentUser!;
     final userData = await _firestore.collection('users').doc(user.uid).get();
@@ -43,6 +46,7 @@ class ChatViewModel extends ChangeNotifier {
     await _firestore.collection('messages').doc(message.id).set(message.toMap());
   }
 
+  // Elimina un mensaje de Firestore
   Future<void> clearMessages() async {
     final user = FirebaseAuth.instance.currentUser!;
     // Actualiza todos los mensajes para marcar como "borrados" por el usuario actual

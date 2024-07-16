@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
+// Animaciones para la aplicación, se utilizará en un futuro, sin utilizar por el momento
 enum AnimationTrigger {
   onPageLoad,
   onActionTrigger,

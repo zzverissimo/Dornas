@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Campo de texto personalizado
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
     super.key,

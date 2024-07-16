@@ -10,6 +10,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+// ViewModel para la autenticación
 class AuthViewModel extends ChangeNotifier {
   final AuthenticationService _authService = AuthenticationService();
   final UserService _userService = UserService();
@@ -36,6 +37,7 @@ class AuthViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Registro de un nuevo usuario
   Future<void> signUp(String email, String password, String displayName, String photoPath, bool canCreateEvents) async {
     setLoading(true);
     setMessage(null);
@@ -65,6 +67,7 @@ class AuthViewModel extends ChangeNotifier {
     }
   }
 
+  // Subir imagen a Firebase Storage
   Future<String> _uploadImage(String filePath, String userId) async {
     File file = File(filePath);
     try {
@@ -75,6 +78,7 @@ class AuthViewModel extends ChangeNotifier {
     }
   }
 
+  // Iniciar sesión con correo electrónico y contraseña
   Future<void> signIn(String email, String password) async {
     setLoading(true);
     setMessage(null);
@@ -100,6 +104,7 @@ class AuthViewModel extends ChangeNotifier {
     }
   }
 
+  // Cerrar sesión
   Future<void> signOut() async {
     setLoading(true);
     try {
@@ -114,6 +119,7 @@ class AuthViewModel extends ChangeNotifier {
     }
   }
 
+  // Restablecer contraseña
   Future<void> resetPassword(String email) async {
     setLoading(true);
     setMessage(null);
@@ -127,6 +133,7 @@ class AuthViewModel extends ChangeNotifier {
     }
   }
 
+  // Guardar la sesión del usuario en SharedPreferences
   Future<void> _saveUserSession(AppUser user) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('userId', user.id);
@@ -136,11 +143,13 @@ class AuthViewModel extends ChangeNotifier {
     await prefs.setBool('userCanCreateEvents', user.canCreateEvents ?? false);
   }
 
+  // Limpiar la sesión del usuario en SharedPreferences
   Future<void> _clearUserSession() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.clear();
   }
 
+  // Obtener la sesión del usuario guardada en SharedPreferences
   Future<AppUser?> getUserSession() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userId = prefs.getString('userId');
@@ -169,6 +178,7 @@ class AuthViewModel extends ChangeNotifier {
     return null;
   }
 
+  // Escuchar cambios en los datos del usuario
   void _listenToUserChanges(String userId) {
     _firestore.collection('users').doc(userId).snapshots().listen((snapshot) {
       if (snapshot.exists) {
@@ -185,6 +195,7 @@ class AuthViewModel extends ChangeNotifier {
     });
   }
 
+  // Verificar si el usuario puede crear eventos
   Future<bool> canUserCreateEvents() async {
     if (_currentUser != null) {
       return _currentUser!.canCreateEvents ?? false;
@@ -192,6 +203,7 @@ class AuthViewModel extends ChangeNotifier {
     return false;
   }
 
+  // Iniciar sesión con Google
   Future<void> signInWithGoogle() async {
     setLoading(true);
     setMessage(null);
@@ -217,6 +229,7 @@ class AuthViewModel extends ChangeNotifier {
     }
   }
 
+  // Actualizar el perfil del usuario
   Future<void> updateUserProfile(String? newName, String? newPhotoPath) async {
     setLoading(true);
     try {
@@ -255,6 +268,7 @@ class AuthViewModel extends ChangeNotifier {
     }
   }
 
+  // Eliminar la cuenta del usuario
   Future<void> deleteAccount() async {
     setLoading(true);
     setMessage(null);

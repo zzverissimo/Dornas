@@ -2,6 +2,7 @@ import 'package:dornas_app/ui/screens/startscreen/widgets/start_buttons.dart';
 import 'package:dornas_app/ui/screens/startscreen/widgets/widget_pageview.dart';
 import 'package:flutter/material.dart';
 
+// Pantalla de inicio
 class StartScreen extends StatefulWidget {
   const StartScreen({super.key});
 

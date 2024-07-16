@@ -1,6 +1,7 @@
 import 'package:dornas_app/ui/widgets/custom_textformfield.dart';
 import 'package:flutter/material.dart';
 
+// Formulario de inicio de sesión
 class LoginForm extends StatelessWidget {
   const LoginForm({
     required this.emailController,

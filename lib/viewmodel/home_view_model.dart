@@ -1,5 +1,6 @@
 import 'package:url_launcher/url_launcher.dart';
 
+// Modelo de vista de la pantalla de inicio
 class HomeViewModel {
    Future<void> openURL(String url) async {
     final Uri uri = Uri.parse(url);

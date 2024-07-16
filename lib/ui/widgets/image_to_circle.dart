@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/services.dart';
 
+// Para el mapa
 Future<Uint8List> getCircleImage(Uint8List imageBytes) async {
   final codec = await ui.instantiateImageCodec(imageBytes);
   final frame = await codec.getNextFrame();

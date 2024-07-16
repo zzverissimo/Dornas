@@ -8,8 +8,10 @@ import 'package:provider/provider.dart';
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
 
-  @override
-  _EditProfileScreenState createState() => _EditProfileScreenState();
+ @override
+  State<EditProfileScreen> createState() {
+    return _EditProfileScreenState();
+  }
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
@@ -42,16 +44,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Editar Perfil'),
+        title: const Text('Editar Perfil'),
         actions: [
           IconButton(
-            icon: Icon(Icons.save),
+            icon: const Icon(Icons.save),
             onPressed: () async {
               final newName = _nameController.text;
               final newPhoto = _imageFile?.path;
 
               await settingsViewModel.updateUserProfile(newName, newPhoto);
+              if(context.mounted){
               Navigator.pop(context);
+              }
             },
           ),
         ],
@@ -71,7 +75,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
             TextField(
               controller: _nameController,
-              decoration: InputDecoration(labelText: 'Nombre'),
+              decoration: const InputDecoration(labelText: 'Nombre'),
             ),
           ],
         ),

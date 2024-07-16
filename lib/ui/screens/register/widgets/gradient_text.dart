@@ -1,6 +1,7 @@
 import 'package:dornas_app/ui/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 
+// Tipos de gradiente
 enum GradientType {
   linear,
   radial,
@@ -13,6 +14,7 @@ enum GradientDirection {
   ttb,
 }
 
+// Texto con gradiente
 class GradientText extends StatelessWidget {
   final List<Color> colors;
   final GradientDirection? gradientDirection;
@@ -82,7 +84,7 @@ class GradientText extends StatelessWidget {
       },
       child: CustomText(
         fontFamily: fontFamily,
-        color: Colors.white,  // Color blanco para que el ShaderMask pueda aplicar el gradiente.
+        color: Colors.white,  
         fontsize: fontsize,
         letterSpacing: letterSpacing,
         fontWeight: fontWeight,

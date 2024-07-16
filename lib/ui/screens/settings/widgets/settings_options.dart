@@ -2,6 +2,7 @@ import 'package:dornas_app/ui/widgets/custom_container.dart';
 import 'package:dornas_app/ui/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 
+// Opción de ajustes
 class SettingsOption extends StatelessWidget {
   final IconData icon;
   final String text;
