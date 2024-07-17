@@ -228,7 +228,7 @@ class MapViewModel extends ChangeNotifier {
     final codec = await instantiateImageCodec(bytes, targetWidth: 100);
     final frame = await codec.getNextFrame();
     final data = await frame.image.toByteData(format: ImageByteFormat.png);
-    return BitmapDescriptor.bytes(data!.buffer.asUint8List());
+    return BitmapDescriptor.fromBytes(data!.buffer.asUint8List());
   }
 
   // Convierte la imagen en un círculo
